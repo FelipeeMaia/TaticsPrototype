@@ -10,8 +10,10 @@ public class Tile : MonoBehaviour
     public int movementCost = 1;
 
     [Header("Grid Calculations")]
-    public int movementNeed = 0;
-    public float distance = -1;
+    public List<Tile> neighbours;
+    public int movementNeed;
+    public float distanceFromStart;
+    public Tile previusTile;
 
     [Header("References")]
     [SerializeField] GameObject _highlight;
@@ -35,13 +37,19 @@ public class Tile : MonoBehaviour
         var thisPostition = new Vector2(x, y);
         var targetPostition = new Vector2(target.x, target.y);
 
-        distance = Vector2.Distance(thisPostition, targetPostition);
+        distanceFromStart = Vector2.Distance(thisPostition, targetPostition);
     }
 
     public void CleanUp()
     {
         _highlight.SetActive(false);
-        distance = -1;
+        distanceFromStart = Mathf.Infinity;
         movementNeed = 0;
+        previusTile = null;
+    }
+
+    private void Start()
+    {
+        CleanUp();
     }
 }

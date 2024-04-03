@@ -1,87 +1,48 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class GridBehaviour : MonoBehaviour
 {
-    [Header("Range Test")]
-    [SerializeField] int movement;
-    [SerializeField] int tileX, tileY;
+    [Header("Testing")]
+    //[SerializeField] int movement;
+    [SerializeField] int sourceX;
+    [SerializeField] int sourceY;
+    [SerializeField] int targetX;
+    [SerializeField] int targetY;
 
-    [Header("Grid Creation")]
-    [SerializeField] Vector2 _gridDimension;
-    [SerializeField] GameObject _tilePrefab;
-    [SerializeField] float _spacing;
-
-    Tile[,] _Tiles;
+    private Tile[,] _Grid;
+    private HashSet<Tile> _tilesInUnitRange;
 
     private Action OnResetTiles;
 
-    //Creation of the Grid
-    public void SetupGrid()
-    {
-        _Tiles = new Tile[(int)_gridDimension.x, (int)_gridDimension.y];
-
-        for (int i = 0; i < _gridDimension.x; i++)
-        {
-            for (int j = 0; j < _gridDimension.y; j++)
-            {
-                var go = Instantiate(_tilePrefab);
-                go.transform.SetParent(transform);
-                
-                var tile = go.GetComponent<Tile>();
-                _Tiles[i, j] = tile;
-                tile.SetPosition(i, j, _spacing);
-                OnResetTiles += tile.CleanUp;
-            }
-        }
-    }
-
-    //Try to get a tile from a coordinate
-    private Tile TryGetTile(int x, int y)
-    {
-        if (x >= _gridDimension.x || y >= _gridDimension.y
-            || x < 0 || y < 0) return null;
-
-        return _Tiles[x, y];
-    }
-
-    //Get a Tile's neighbours
-    private List<Tile> FindNeighbours(Tile tile)
-    {
-        List<Tile> neighbours = new List<Tile>();
-
-        neighbours.Add(TryGetTile(tile.x + 1, tile.y));
-        neighbours.Add(TryGetTile(tile.x - 1, tile.y));
-        neighbours.Add(TryGetTile(tile.x, tile.y + 1));
-        neighbours.Add(TryGetTile(tile.x, tile.y - 1));
-        neighbours.RemoveAll(neighbor => neighbor == null);
-
-        return neighbours;
-    }
-
     //Get Tiles in range form an initial tile
-    private void HighlightRange()
+    public void HighlightRange(Unit unit)
     {
+        OnResetTiles?.Invoke();
+
         //Set groups
         HashSet<Tile> tilesToSearch = new HashSet<Tile>();
         HashSet<Tile> newTilesToSearch = new HashSet<Tile>();
         HashSet<Tile> tilesFound = new HashSet<Tile>();
 
         //Set initial tile
-        Tile initialTile = _Tiles[tileX, tileY];
+        //Tile initialTile = _Tiles[sourceX, sourceY];
+        Tile initialTile = unit.tile;
         initialTile.movementNeed = 0;
         tilesToSearch.Add(initialTile);
         tilesFound.Add(initialTile);
+        int movement = unit.movement;
 
         while(tilesToSearch.Count != 0)
         {
             foreach(Tile tile in tilesToSearch)
             {
-                List<Tile> neighbours = FindNeighbours(tile);
+                //List<Tile> neighbours = FindNeighbours(tile);
 
-                foreach(Tile neighbour in neighbours)
+                foreach(Tile neighbour in tile.neighbours)
                 {
                     if (tilesFound.Contains(neighbour)) continue;
 
@@ -99,25 +60,81 @@ public class GridBehaviour : MonoBehaviour
             tilesFound.UnionWith(tilesToSearch);
             newTilesToSearch = new HashSet<Tile>();
         }
+
+        _tilesInUnitRange = tilesFound;
     }
 
-    private void ResetTiles()
+    private void GeneratePath(int targetX, int targetY)
     {
+        Tile startTile = _Grid[sourceX, sourceY];
+        Tile endTile = _Grid[targetX, targetY];
+
+        if (endTile == null || startTile == null || 
+            !_tilesInUnitRange.Contains(endTile)) return;
+
         OnResetTiles?.Invoke();
-    }
+        startTile.distanceFromStart = 0;
 
-    private void Start()
-    {
-        SetupGrid();
-        FindNeighbours(_Tiles[2, 2]);
-    }
+        List<Tile> unvisitedTiles = new List<Tile>();
+        unvisitedTiles = _tilesInUnitRange.ToList();
 
-    private void Update()
-    {
-        if(Input.GetKeyDown(KeyCode.Space))
+        while(unvisitedTiles.Count != 0)
         {
-            ResetTiles();
-            HighlightRange();
+            Tile nextTile = null;
+
+            foreach(Tile tile in unvisitedTiles)
+            {
+                if(nextTile == null || tile.distanceFromStart < nextTile.distanceFromStart)
+                {
+                    nextTile = tile;
+                }
+            }
+
+            if (nextTile == endTile) break;
+
+            unvisitedTiles.Remove(nextTile);
+
+            foreach(Tile neighbour in nextTile.neighbours)
+            {
+                float newDistance = nextTile.distanceFromStart + neighbour.movementCost;
+
+                if(newDistance < neighbour.distanceFromStart)
+                {
+                    neighbour.distanceFromStart = newDistance;
+                    neighbour.previusTile = nextTile;
+                }
+            }
         }
+
+        List<Tile> newPath = new List<Tile>();
+        Tile currentTile = endTile;
+        while(currentTile != null)
+        {
+            currentTile.Highlight();
+            newPath.Add(currentTile);
+            currentTile = currentTile.previusTile;
+        }
+
+        newPath.Reverse();
     }
+
+    private void Awake()
+    {
+        var creator = FindObjectOfType<GridCreator>();
+        _Grid = creator.CreateGrid();
+    }
+
+    /*private void Update()
+    {
+        if(Input.GetKeyDown(KeyCode.R))
+        {
+            //HighlightRange();
+        }
+
+        if (Input.GetKeyDown(KeyCode.P))
+        {
+            GeneratePath(targetX, targetY);
+        }
+
+    }*/
 }
