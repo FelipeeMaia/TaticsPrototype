@@ -471,8 +471,8 @@ MonoBehaviour:
   _gridBehaviour: {fileID: 1454684965}
   _tilePrefab: {fileID: 5101011718965177848, guid: 853ebc1702a07904794a5857de18b625,
     type: 3}
-  width: 30
-  height: 30
+  width: 20
+  height: 8
   _spacing: 2
 --- !u!1 &832575517
 GameObject:
@@ -594,7 +594,7 @@ Transform:
   m_GameObject: {fileID: 1582935758}
   serializedVersion: 2
   m_LocalRotation: {x: 0.23911765, y: 0.3696438, z: -0.09904577, w: 0.89239913}
-  m_LocalPosition: {x: 12.5, y: 0, z: 12.5}
+  m_LocalPosition: {x: 17.5, y: 0, z: 5.5}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -627,6 +627,11 @@ PrefabInstance:
       propertyPath: grid
       value: 
       objectReference: {fileID: 1454684965}
+    - target: {fileID: 2874331731551749738, guid: 587cdd83620661443be415c659891944,
+        type: 3}
+      propertyPath: movement
+      value: 4
+      objectReference: {fileID: 0}
     - target: {fileID: 5846802170013166420, guid: 587cdd83620661443be415c659891944,
         type: 3}
       propertyPath: m_LocalPosition.x

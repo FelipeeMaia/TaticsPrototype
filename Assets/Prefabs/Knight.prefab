@@ -905,6 +905,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fa760ae9e5afdcc4496b89c0abe2309c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  movement: 10
+  movement: 4
   tile: {fileID: 0}
   grid: {fileID: 0}
+  _anim: {fileID: 3505750106183919493}
