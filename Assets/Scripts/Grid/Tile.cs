@@ -17,29 +17,29 @@ public class Tile : MonoBehaviour
 
     [Header("References")]
     [SerializeField] GameObject _highlight;
+    [SerializeField] Renderer _renderer;
+    [SerializeField] Material _normalMat, _altMat;
 
-    public void SetPosition(int x, int y, float spacing)
+    //Setup Tile
+    public void SetTile(int x, int y, float spacing)
     {
         this.x = x;
         this.y = y;
 
         gameObject.name = $"Tile: {x}-{y}";
         transform.localPosition = new Vector3(x * spacing, 0, y * spacing);
+
+        bool isOffset = (x + y) % 2 == 0;
+        _renderer.material = isOffset ? _altMat : _normalMat;
     }
 
+    //Turns highlight on
     public void Highlight()
     {
         _highlight.SetActive(true);
     }
 
-    public void SetDistanceToTarget(Tile target)
-    {
-        var thisPostition = new Vector2(x, y);
-        var targetPostition = new Vector2(target.x, target.y);
-
-        distanceFromStart = Vector2.Distance(thisPostition, targetPostition);
-    }
-
+    //Set tile to default state
     public void CleanUp()
     {
         _highlight.SetActive(false);

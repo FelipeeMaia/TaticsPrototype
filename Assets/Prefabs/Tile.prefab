@@ -142,12 +142,23 @@ MonoBehaviour:
   x: 0
   y: 0
   movementCost: 1
+  neighbours: []
   movementNeed: 0
-  distance: -1
+  distanceFromStart: 0
+  previusTile: {fileID: 0}
   _highlight: {fileID: 8131306310972718533}
+  _renderer: {fileID: 6758376170794355757}
+  _normalMat: {fileID: 2100000, guid: c480392832ce73e45887fee8da491c36, type: 2}
+  _altMat: {fileID: 2100000, guid: c904936cd8f747443a4665d0e9e4f6c6, type: 2}
 --- !u!4 &5584955626480891714 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 2ad0f6fdcb62d4349aa0c3217b1c2ca8,
+    type: 3}
+  m_PrefabInstance: {fileID: 5335365812285542569}
+  m_PrefabAsset: {fileID: 0}
+--- !u!23 &6758376170794355757 stripped
+MeshRenderer:
+  m_CorrespondingSourceObject: {fileID: -7511558181221131132, guid: 2ad0f6fdcb62d4349aa0c3217b1c2ca8,
     type: 3}
   m_PrefabInstance: {fileID: 5335365812285542569}
   m_PrefabAsset: {fileID: 0}

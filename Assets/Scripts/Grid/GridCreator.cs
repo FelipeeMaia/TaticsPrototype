@@ -26,7 +26,7 @@ public class GridCreator : MonoBehaviour
 
                 var tile = go.GetComponent<Tile>();
                 newGrid[i, j] = tile;
-                tile.SetPosition(i, j, _spacing);
+                tile.SetTile(i, j, _spacing);
                 _gridBehaviour.OnCleanTiles += tile.CleanUp;
             }
         }
