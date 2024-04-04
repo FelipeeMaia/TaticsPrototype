@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class CameraController : MonoBehaviour
@@ -7,7 +5,7 @@ public class CameraController : MonoBehaviour
     [SerializeField] float _speed;
     private Vector3 _input;
 
-    void Update()
+    private void Update()
     {
         GatherInput();   
     }

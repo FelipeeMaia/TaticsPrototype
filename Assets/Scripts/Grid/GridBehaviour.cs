@@ -6,14 +6,7 @@ using UnityEngine;
 
 public class GridBehaviour : MonoBehaviour
 {
-    [Header("Testing")]
-    //[SerializeField] int movement;
-    [SerializeField] int sourceX;
-    [SerializeField] int sourceY;
-    [SerializeField] int targetX;
-    [SerializeField] int targetY;
-
-    private Tile[,] _Tiles;
+    //private Tile[,] _Tiles;
     public Action OnCleanTiles;
 
     //Get Tiles in range form an initial tile
@@ -60,6 +53,7 @@ public class GridBehaviour : MonoBehaviour
         return tilesFound;
     }
 
+    //Generate a path from start to end tiles in the grid
     public List<Tile> GeneratePath(Tile startTile, Tile endTile, HashSet<Tile> tilesInRange)
     {
         if (endTile == null || startTile == null || 
@@ -111,14 +105,16 @@ public class GridBehaviour : MonoBehaviour
         return newPath;
     }
 
-    private void Awake()
-    {
-        var creator = FindObjectOfType<GridCreator>();
-        _Tiles = creator.CreateGrid();
-    }
-
+    //Reset all tiles in the grid
     public void CleanTiles()
     {
         OnCleanTiles?.Invoke();
+    }
+
+    private void Awake()
+    {
+        var creator = FindObjectOfType<GridCreator>();
+        creator.CreateGrid();
+        //_Tiles = creator.CreateGrid();
     }
 }

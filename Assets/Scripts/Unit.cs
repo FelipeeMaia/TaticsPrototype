@@ -8,13 +8,32 @@ public class Unit : MonoBehaviour
     public Tile tile;
     public GridBehaviour grid;
 
-    public void SelectUnit()
+    //Recieve a new path
+    public void MoveUnit(List<Tile> path)
     {
-        grid.HighlightRange(this);
+        StartCoroutine(MoveThroughPath(path));
     }
 
-    public void MoveUnit(List<Tile> newPath)
+    //Move unit through each tile of the path
+    public IEnumerator MoveThroughPath(List<Tile> path)
     {
+        while(path.Count > 1)
+        {
+            Vector3 startPos = path[0].transform.position;
+            Vector3 endPos = path[1].transform.position;
+            float lerpTime = 0;
+
+            while (lerpTime < 1)
+            {
+                lerpTime += 0.1f;
+                transform.position = Vector3.Lerp(startPos, endPos, lerpTime);
+                yield return new WaitForFixedUpdate();
+            }
+
+            path.RemoveAt(0);
+        }
+
+        tile = path[0];
         transform.position = tile.transform.position;
     }
 

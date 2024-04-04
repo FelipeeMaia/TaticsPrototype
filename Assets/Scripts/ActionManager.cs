@@ -4,11 +4,11 @@ using UnityEngine;
 
 public class ActionManager : MonoBehaviour
 {
-
     [SerializeField] GridBehaviour _grid;
 
     private Unit _selectedUnit;
     private HashSet<Tile> _tilesInUnitRange;
+
     private enum step { Selection, Move }
     [SerializeField] private step _currentStep = step.Selection;
 
@@ -28,6 +28,7 @@ public class ActionManager : MonoBehaviour
 
     }
 
+    //If the clicked object is a unit, get the tiles it can move to
     private void SelectionStep(GameObject clickedObject)
     {
         var clickedUnit = clickedObject.GetComponent<Unit>();
@@ -39,6 +40,7 @@ public class ActionManager : MonoBehaviour
         _currentStep = step.Move;
     }
 
+    //If the clicked object is a tile, move unit to it
     private void MoveStep(GameObject clickedObject)
     {
         _currentStep = step.Selection;
@@ -53,7 +55,7 @@ public class ActionManager : MonoBehaviour
         _selectedUnit.MoveUnit(path);
     }
 
-
+    //Uses raycast to get info of clicked object
     private GameObject SelectObject()
     {
         RaycastHit hit;

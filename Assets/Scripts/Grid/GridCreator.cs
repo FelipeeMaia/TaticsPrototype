@@ -1,10 +1,9 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class GridCreator : MonoBehaviour
 {
-    [Header("Grid Creation")]
+    [Header("Grid Parameters")]
     [SerializeField] GridBehaviour _gridBehaviour;
     [SerializeField] GameObject _tilePrefab;
     [SerializeField] int width, height;
