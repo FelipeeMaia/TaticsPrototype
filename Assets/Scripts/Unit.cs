@@ -8,11 +8,6 @@ public class Unit : MonoBehaviour
     public Tile tile;
     public GridBehaviour grid;
 
-    private void OnMouseDown()
-    {
-        SelectUnit();
-    }
-
     public void SelectUnit()
     {
         grid.HighlightRange(this);
@@ -20,6 +15,11 @@ public class Unit : MonoBehaviour
 
     public void MoveUnit(List<Tile> newPath)
     {
+        transform.position = tile.transform.position;
+    }
 
+    public void Start()
+    {
+        tile = GameObject.Find("Tile: 0-0").GetComponent<Tile>();
     }
 }

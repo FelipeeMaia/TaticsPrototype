@@ -5,6 +5,7 @@ using UnityEngine;
 public class GridCreator : MonoBehaviour
 {
     [Header("Grid Creation")]
+    [SerializeField] GridBehaviour _gridBehaviour;
     [SerializeField] GameObject _tilePrefab;
     [SerializeField] int width, height;
     [SerializeField] float _spacing;
@@ -27,7 +28,7 @@ public class GridCreator : MonoBehaviour
                 var tile = go.GetComponent<Tile>();
                 newGrid[i, j] = tile;
                 tile.SetPosition(i, j, _spacing);
-                //OnResetTiles += tile.CleanUp;
+                _gridBehaviour.OnCleanTiles += tile.CleanUp;
             }
         }
 

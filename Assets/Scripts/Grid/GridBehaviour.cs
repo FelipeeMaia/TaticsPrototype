@@ -13,16 +13,12 @@ public class GridBehaviour : MonoBehaviour
     [SerializeField] int targetX;
     [SerializeField] int targetY;
 
-    private Tile[,] _Grid;
-    private HashSet<Tile> _tilesInUnitRange;
-
-    private Action OnResetTiles;
+    private Tile[,] _Tiles;
+    public Action OnCleanTiles;
 
     //Get Tiles in range form an initial tile
-    public void HighlightRange(Unit unit)
+    public HashSet<Tile> HighlightRange(Unit unit)
     {
-        OnResetTiles?.Invoke();
-
         //Set groups
         HashSet<Tile> tilesToSearch = new HashSet<Tile>();
         HashSet<Tile> newTilesToSearch = new HashSet<Tile>();
@@ -61,22 +57,18 @@ public class GridBehaviour : MonoBehaviour
             newTilesToSearch = new HashSet<Tile>();
         }
 
-        _tilesInUnitRange = tilesFound;
+        return tilesFound;
     }
 
-    private void GeneratePath(int targetX, int targetY)
+    public List<Tile> GeneratePath(Tile startTile, Tile endTile, HashSet<Tile> tilesInRange)
     {
-        Tile startTile = _Grid[sourceX, sourceY];
-        Tile endTile = _Grid[targetX, targetY];
-
         if (endTile == null || startTile == null || 
-            !_tilesInUnitRange.Contains(endTile)) return;
+            !tilesInRange.Contains(endTile)) return null;
 
-        OnResetTiles?.Invoke();
         startTile.distanceFromStart = 0;
 
         List<Tile> unvisitedTiles = new List<Tile>();
-        unvisitedTiles = _tilesInUnitRange.ToList();
+        unvisitedTiles = tilesInRange.ToList();
 
         while(unvisitedTiles.Count != 0)
         {
@@ -116,25 +108,17 @@ public class GridBehaviour : MonoBehaviour
         }
 
         newPath.Reverse();
+        return newPath;
     }
 
     private void Awake()
     {
         var creator = FindObjectOfType<GridCreator>();
-        _Grid = creator.CreateGrid();
+        _Tiles = creator.CreateGrid();
     }
 
-    /*private void Update()
+    public void CleanTiles()
     {
-        if(Input.GetKeyDown(KeyCode.R))
-        {
-            //HighlightRange();
-        }
-
-        if (Input.GetKeyDown(KeyCode.P))
-        {
-            GeneratePath(targetX, targetY);
-        }
-
-    }*/
+        OnCleanTiles?.Invoke();
+    }
 }
