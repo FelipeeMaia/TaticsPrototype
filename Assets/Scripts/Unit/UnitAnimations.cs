@@ -36,7 +36,6 @@ namespace Brisanti.Tactics.Units
         public void Attack()
         {
             int randomAttack = Random.Range(0, numberOfAttacks);
-            Debug.Log(randomAttack);
             _anim.SetInteger("Randomizer", randomAttack);
             _anim.SetTrigger("Attack");
         }

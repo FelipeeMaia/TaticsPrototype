@@ -8,7 +8,7 @@ namespace Brisanti.Tactics.Units
         [SerializeField] int _currentHealth;
         [SerializeField] int _maxHealth;
 
-        public Action<int, int> OnLoseHealth;
+        public Action<int, int> OnChangeHealth;
         public Action OnDeath;
         public Action OnHit;
 
@@ -19,7 +19,7 @@ namespace Brisanti.Tactics.Units
             if (_isDead) return;
 
             _currentHealth -= amount;
-            OnLoseHealth?.Invoke(_currentHealth, _maxHealth);
+            OnChangeHealth?.Invoke(_currentHealth, _maxHealth);
 
             if (_currentHealth <= 0)
             {
@@ -30,13 +30,12 @@ namespace Brisanti.Tactics.Units
             {
                 OnHit?.Invoke();
             }
-
-            Debug.Log($"{_currentHealth}/{_maxHealth}");
         }
 
         private void Start()
         {
             _currentHealth = _maxHealth;
+            OnChangeHealth?.Invoke(_currentHealth, _maxHealth);
         }
     }
 }

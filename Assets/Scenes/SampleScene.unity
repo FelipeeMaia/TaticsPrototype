@@ -712,10 +712,20 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1999182607121944917, guid: acb06c83f7f550d478d43c1b964709da,
+        type: 3}
+      propertyPath: m_AdditionalShaderChannelsFlag
+      value: 25
+      objectReference: {fileID: 0}
     - target: {fileID: 2682289367840104351, guid: acb06c83f7f550d478d43c1b964709da,
         type: 3}
       propertyPath: m_Name
       value: Knight-Unit (2)
+      objectReference: {fileID: 0}
+    - target: {fileID: 2682289367840104351, guid: acb06c83f7f550d478d43c1b964709da,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7443180204265798060, guid: acb06c83f7f550d478d43c1b964709da,
         type: 3}
@@ -766,6 +776,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8522697452969117389, guid: acb06c83f7f550d478d43c1b964709da,
+        type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 200
+      objectReference: {fileID: 0}
+    - target: {fileID: 8522697452969117389, guid: acb06c83f7f550d478d43c1b964709da,
+        type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 50
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -894,6 +914,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: -3.055157
+      objectReference: {fileID: 0}
+    - target: {fileID: 1999182607121944917, guid: acb06c83f7f550d478d43c1b964709da,
+        type: 3}
+      propertyPath: m_AdditionalShaderChannelsFlag
+      value: 25
       objectReference: {fileID: 0}
     - target: {fileID: 2201967342406418662, guid: acb06c83f7f550d478d43c1b964709da,
         type: 3}
@@ -1464,6 +1489,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: -0.000032985237
+      objectReference: {fileID: 0}
+    - target: {fileID: 8522697452969117389, guid: acb06c83f7f550d478d43c1b964709da,
+        type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 200
+      objectReference: {fileID: 0}
+    - target: {fileID: 8522697452969117389, guid: acb06c83f7f550d478d43c1b964709da,
+        type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 50
       objectReference: {fileID: 0}
     - target: {fileID: 8577913923074242319, guid: acb06c83f7f550d478d43c1b964709da,
         type: 3}
