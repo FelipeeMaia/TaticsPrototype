@@ -1,51 +1,55 @@
+using Brisanti.Tactics.Tiles;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Tile : MonoBehaviour
+namespace Brisanti.Tactics.Core
 {
-    [Header("Tile Stats")]
-    public int x = 0;
-    public int y = 0;
-    public int movementCost = 1;
-    public Unit unitOnTile = null;
-
-    //[Header("Grid Calculations")]
-    [HideInInspector] public List<Tile> neighbours;
-    [HideInInspector] public int movementNeed;
-    [HideInInspector] public int distanceFromStart;
-    [HideInInspector] public Tile previusTile;
-
-    [Header("References")]
-    public TileHighlight highlight;
-    [SerializeField] Renderer _renderer;
-    [SerializeField] Material[] _materials;
-
-    //Setup Tile
-    public void SetTile(int x, int y, float spacing)
+    public class Tile : MonoBehaviour
     {
-        this.x = x;
-        this.y = y;
+        [Header("Tile Stats")]
+        public int x = 0;
+        public int y = 0;
+        public int movementCost = 1;
+        public Unit unitOnTile = null;
 
-        gameObject.name = $"Tile: {x}-{y}";
-        transform.localPosition = new Vector3(x * spacing, 0, y * spacing);
+        //[Header("Grid Calculations")]
+        [HideInInspector] public List<Tile> neighbours;
+        [HideInInspector] public int movementNeed;
+        [HideInInspector] public int distanceFromStart;
+        [HideInInspector] public Tile previusTile;
 
-        int offsetID = (x + y) % 2;
-        _renderer.material = _materials[offsetID];
-    }
+        [Header("References")]
+        public TileHighlight highlight;
+        [SerializeField] Renderer _renderer;
+        [SerializeField] Material[] _materials;
 
-    //Set tile to default state
-    public void CleanUp()
-    {
-        distanceFromStart = 1000;
-        movementNeed = 0;
-        previusTile = null;
+        //Setup Tile
+        public void SetTile(int x, int y, float spacing)
+        {
+            this.x = x;
+            this.y = y;
 
-        highlight.Clean();
-    }
+            gameObject.name = $"Tile: {x}-{y}";
+            transform.localPosition = new Vector3(x * spacing, 0, y * spacing);
 
-    private void Start()
-    {
-        CleanUp();
+            int offsetID = (x + y) % 2;
+            _renderer.material = _materials[offsetID];
+        }
+
+        //Set tile to default state
+        public void CleanUp()
+        {
+            distanceFromStart = 1000;
+            movementNeed = 0;
+            previusTile = null;
+
+            highlight.Clean();
+        }
+
+        private void Start()
+        {
+            CleanUp();
+        }
     }
 }

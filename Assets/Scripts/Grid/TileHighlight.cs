@@ -1,44 +1,48 @@
+using Brisanti.Tactics.Core;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class TileHighlight : MonoBehaviour
+namespace Brisanti.Tactics.Tiles
 {
-    [SerializeField] GameObject _movementHighlight;
-    [SerializeField] GameObject _attackHighlight;
-    [SerializeField] GameObject[] _rangeHighlights;
-
-
-    public void Movement()
+    public class TileHighlight : MonoBehaviour
     {
-        _movementHighlight.SetActive(true);
-    }
+        [SerializeField] GameObject _movementHighlight;
+        [SerializeField] GameObject _attackHighlight;
+        [SerializeField] GameObject[] _rangeHighlights;
 
-    public void Attack()
-    {
-        _movementHighlight.SetActive(false);
-        _attackHighlight.SetActive(true);
-    }
 
-    public void Range(HashSet<Tile> _tilesInRange, List<Tile> neighbours)
-    {
-        for(int i = 0; i < 4; i++)
+        public void Movement()
         {
-            bool isLimitOfRange;
-
-            isLimitOfRange = (neighbours[i] != null &&
-                _tilesInRange.Contains(neighbours[i])); 
-
-            _rangeHighlights[i].SetActive(!isLimitOfRange);
+            _movementHighlight.SetActive(true);
         }
-    }
 
-    public void Clean()
-    {
-        _movementHighlight.SetActive(false);
-        _attackHighlight.SetActive(false);
-        foreach(GameObject side in _rangeHighlights)
+        public void Attack()
         {
-            side.SetActive(false);
+            _movementHighlight.SetActive(false);
+            _attackHighlight.SetActive(true);
+        }
+
+        public void Range(HashSet<Tile> _tilesInRange, List<Tile> neighbours)
+        {
+            for (int i = 0; i < 4; i++)
+            {
+                bool isLimitOfRange;
+
+                isLimitOfRange = (neighbours[i] != null &&
+                    _tilesInRange.Contains(neighbours[i]));
+
+                _rangeHighlights[i].SetActive(!isLimitOfRange);
+            }
+        }
+
+        public void Clean()
+        {
+            _movementHighlight.SetActive(false);
+            _attackHighlight.SetActive(false);
+            foreach (GameObject side in _rangeHighlights)
+            {
+                side.SetActive(false);
+            }
         }
     }
 }

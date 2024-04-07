@@ -1,71 +1,74 @@
+using Brisanti.Tactics.Core;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class GridCreator : MonoBehaviour
+namespace Brisanti.Tactics.Grids
 {
-    [Header("Grid Parameters")]
-    [SerializeField] GridBehaviour _gridBehaviour;
-    [SerializeField] GameObject _tilePrefab;
-    [SerializeField] int width, height;
-    [SerializeField] float _spacing;
-    private Tile[,] _Grid;
-
-    //Creation of the Grid
-    public Tile[,] CreateGrid()
+    public class GridCreator : MonoBehaviour
     {
-         Tile[,] newGrid = new Tile[width, height];
+        [Header("Grid Parameters")]
+        [SerializeField] GridBehaviour _gridBehaviour;
+        [SerializeField] GameObject _tilePrefab;
+        [SerializeField] int width, height;
+        [SerializeField] float _spacing;
+        private Tile[,] _Grid;
 
-        newGrid = new Tile[width, height];
-
-        for (int i = 0; i < width; i++)
+        //Creation of the Grid
+        public Tile[,] CreateGrid()
         {
-            for (int j = 0; j < height; j++)
-            {
-                var go = Instantiate(_tilePrefab);
-                go.transform.SetParent(transform);
+            Tile[,] newGrid = new Tile[width, height];
 
-                var tile = go.GetComponent<Tile>();
-                newGrid[i, j] = tile;
-                tile.SetTile(i, j, _spacing);
-                _gridBehaviour.OnCleanTiles += tile.CleanUp;
+            newGrid = new Tile[width, height];
+
+            for (int i = 0; i < width; i++)
+            {
+                for (int j = 0; j < height; j++)
+                {
+                    var go = Instantiate(_tilePrefab);
+                    go.transform.SetParent(transform);
+
+                    var tile = go.GetComponent<Tile>();
+                    newGrid[i, j] = tile;
+                    tile.SetTile(i, j, _spacing);
+                    _gridBehaviour.OnCleanTiles += tile.CleanUp;
+                }
             }
+
+            _Grid = newGrid;
+
+            for (int i = 0; i < width; i++)
+            {
+                for (int j = 0; j < height; j++)
+                {
+                    newGrid[i, j].neighbours = FindNeighbours(newGrid[i, j]);
+                }
+            }
+
+            return newGrid;
         }
 
-        _Grid = newGrid;
-
-        for (int i = 0; i < width; i++)
+        //Get a Tile's neighbours
+        private List<Tile> FindNeighbours(Tile tile)
         {
-            for (int j = 0; j < height; j++)
-            {
-                newGrid[i, j].neighbours = FindNeighbours(newGrid[i, j]);
-            }
+            List<Tile> neighbours = new List<Tile>();
+
+            neighbours.Add(TryGetTile(tile.x + 1, tile.y));
+            neighbours.Add(TryGetTile(tile.x - 1, tile.y));
+            neighbours.Add(TryGetTile(tile.x, tile.y + 1));
+            neighbours.Add(TryGetTile(tile.x, tile.y - 1));
+            //neighbours.RemoveAll(neighbor => neighbor == null);
+
+            return neighbours;
         }
 
-        return newGrid;
-    }
+        //Try to get a tile from a coordinate
+        private Tile TryGetTile(int x, int y)
+        {
+            if (x >= width || y >= height
+                || x < 0 || y < 0) return null;
 
-    //Get a Tile's neighbours
-    private List<Tile> FindNeighbours(Tile tile)
-    {
-        List<Tile> neighbours = new List<Tile>();
-
-        neighbours.Add(TryGetTile(tile.x + 1, tile.y));
-        neighbours.Add(TryGetTile(tile.x - 1, tile.y));
-        neighbours.Add(TryGetTile(tile.x, tile.y + 1));
-        neighbours.Add(TryGetTile(tile.x, tile.y - 1));
-        //neighbours.RemoveAll(neighbor => neighbor == null);
-
-        return neighbours;
-    }
-
-    //Try to get a tile from a coordinate
-    private Tile TryGetTile(int x, int y)
-    {
-        if (x >= width || y >= height
-            || x < 0 || y < 0) return null;
-
-        //Debug.Log($"{x}-{y}");
-        return _Grid[x, y];
+            //Debug.Log($"{x}-{y}");
+            return _Grid[x, y];
+        }
     }
 }
-
