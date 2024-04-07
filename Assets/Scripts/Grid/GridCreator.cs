@@ -53,7 +53,7 @@ public class GridCreator : MonoBehaviour
         neighbours.Add(TryGetTile(tile.x - 1, tile.y));
         neighbours.Add(TryGetTile(tile.x, tile.y + 1));
         neighbours.Add(TryGetTile(tile.x, tile.y - 1));
-        neighbours.RemoveAll(neighbor => neighbor == null);
+        //neighbours.RemoveAll(neighbor => neighbor == null);
 
         return neighbours;
     }

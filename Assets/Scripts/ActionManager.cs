@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -7,66 +6,171 @@ public class ActionManager : MonoBehaviour
     [SerializeField] GridBehaviour _grid;
 
     private Unit _selectedUnit;
-    private HashSet<Tile> _tilesInUnitRange;
+    private HashSet<Tile> _tilesInMovementRange;
+    private HashSet<Tile> _tilesInAttackRange;
 
-    private enum step { Selection, Move }
-    [SerializeField] private step _currentStep = step.Selection;
+    [SerializeField] bool _isWaiting = false;
 
     void Update()
     {
-        GameObject clickedObject = null;
+        if (_isWaiting) return;
 
         if (Input.GetMouseButtonDown(0))
         {
-            clickedObject = SelectObject();
+            SelectObject();
         }
 
-        if (clickedObject == null) return;
-
-        if (_currentStep == step.Selection) SelectionStep(clickedObject);
-        else if (_currentStep == step.Move) MoveStep(clickedObject);
-
+        if(Input.GetKeyDown(KeyCode.P) && _selectedUnit)
+        {
+            _selectedUnit.RestoreMovement();
+            SelectUnit(_selectedUnit);
+        }
     }
 
-    //If the clicked object is a unit, get the tiles it can move to
-    private void SelectionStep(GameObject clickedObject)
+    //Selects an unit and show it's action possibilities
+    private void SelectUnit(Unit clickedUnit)
     {
-        var clickedUnit = clickedObject.GetComponent<Unit>();
-        if (clickedUnit == null) return;
-
+        if (clickedUnit.team != 0) return;
         _selectedUnit = clickedUnit;
-        _tilesInUnitRange = _grid.HighlightRange(clickedUnit);
 
-        _currentStep = step.Move;
+        _tilesInMovementRange = _grid.GetTilesInRange(clickedUnit.ocupedTile, clickedUnit.movementLeft);
+        foreach (Tile tile in _tilesInMovementRange)
+        {
+            if (tile == _selectedUnit.ocupedTile) continue;
+            tile.highlight.Movement();
+        }
+
+        if (_selectedUnit.hasAttacked) return;
+
+        _tilesInAttackRange = _grid.GetTilesInRange(clickedUnit.ocupedTile, clickedUnit.attackRange, false);
+        foreach (Tile tile in _tilesInAttackRange)
+        {
+            tile.highlight.Range(_tilesInAttackRange, tile.neighbours);
+        }
+
+        /*
+        _enemyUnits = new List<Unit>(_allUnits);
+        _enemyUnits.Remove(_selectedUnit);
+
+        foreach(Unit enemy in _enemyUnits)
+        {
+            HashSet<Tile> _enemyRange = new HashSet<Tile>();
+            _enemyRange = _grid.GetTilesInRange(enemy.ocupedTile, clickedUnit.range);
+
+            foreach (Tile tile in _enemyRange)
+            {
+                tile.Highlight(1);
+            }
+
+
+            if (_tilesInUnitRange.Overlaps(_enemyRange))
+            {
+                enemy.ocupedTile.Highlight(1);
+                Debug.Log(enemy.ocupedTile);
+            }
+        }
+        */
     }
 
-    //If the clicked object is a tile, move unit to it
-    private void MoveStep(GameObject clickedObject)
+    //Order _selectedUnit to move along a path
+    private void MoveUnitTo(Tile clickedTile)
     {
-        _currentStep = step.Selection;
-
-        var clickedTile = clickedObject.GetComponent<Tile>();
-        if (clickedTile == null) return;
-
-        var path = _grid.GeneratePath(_selectedUnit.tile, clickedTile, _tilesInUnitRange);
+        var path = _grid.GeneratePath(_selectedUnit.ocupedTile, clickedTile, _tilesInMovementRange);
         if (path == null) return;
 
-        _selectedUnit.tile = clickedTile;
         _selectedUnit.MoveUnit(path);
+        StartWaiting(_selectedUnit);
+    }
+
+    //Order _selectedUnit to attack an target
+    private void AttackUnit(Unit target)
+    {
+        StartWaiting(_selectedUnit);
+        _selectedUnit.Attack(target);
+        //waits for action end
     }
 
     //Uses raycast to get info of clicked object
-    private GameObject SelectObject()
+    private void SelectObject()
     {
         RaycastHit hit;
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 
-        if(Physics.Raycast(ray, out hit))
+        if (Physics.Raycast(ray, out hit))
         {
-            _grid.CleanTiles();
-            return hit.transform.gameObject;
+            GameObject objectFound = hit.transform.gameObject;
+            if (CheckForUnit(objectFound) ||
+                CheckForTile(objectFound)) return;
         }
 
-        return null;
+        _selectedUnit = null;
+        _grid.CleanTiles();
+    }
+
+    //Checks if objectFound is an Unit and what to do with it 
+    private bool CheckForUnit(GameObject objectFound)
+    {
+        var unitFound = objectFound.GetComponent<Unit>();
+
+        if (unitFound == _selectedUnit ||
+            unitFound == null) return false;
+
+        if (_selectedUnit == null)
+        {
+            SelectUnit(unitFound);
+        }
+        else if (_selectedUnit.team != unitFound.team)
+        {
+            return CheckForCombat(unitFound);
+        }
+
+        return true;
+    }
+
+    //Checks if objectFound is a Tile and what to do with it 
+    private bool CheckForTile(GameObject objectFound)
+    {
+        var tileFound = objectFound.GetComponent<Tile>();
+        if (!tileFound|| !_selectedUnit) return false;
+
+        if (_tilesInMovementRange.Contains(tileFound))
+        {
+            MoveUnitTo(tileFound);
+        }
+        else if (tileFound.unitOnTile != null)
+        {
+            return CheckForCombat(tileFound.unitOnTile);
+        }
+        else
+        {
+            return false;
+        }
+
+        return true;
+    }
+
+    //Checks if found target is an enemy and is in range
+    private bool CheckForCombat(Unit target)
+    {
+        if (!_tilesInAttackRange.Contains(target.ocupedTile) ||
+            target.team == _selectedUnit.team ||
+            _selectedUnit.hasAttacked) return false;
+
+        AttackUnit(target);
+        return true;
+    }
+
+    private void StartWaiting(Unit unit)
+    {
+        unit.OnActionEnd += EndWaitign;
+        _grid.CleanTiles();
+        _isWaiting = true;
+    }
+
+    public void EndWaitign(Unit unit)
+    {
+        unit.OnActionEnd -= EndWaitign;
+        _isWaiting = false;
+        SelectUnit(unit);
     }
 }

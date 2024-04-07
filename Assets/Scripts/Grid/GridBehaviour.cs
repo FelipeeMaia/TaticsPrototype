@@ -10,37 +10,33 @@ public class GridBehaviour : MonoBehaviour
     public Action OnCleanTiles;
 
     //Get Tiles in range form an initial tile
-    public HashSet<Tile> HighlightRange(Unit unit)
+    public HashSet<Tile> GetTilesInRange(Tile initialTile, int range, bool checkUnits = true)
     {
         //Set groups
         HashSet<Tile> tilesToSearch = new HashSet<Tile>();
         HashSet<Tile> newTilesToSearch = new HashSet<Tile>();
         HashSet<Tile> tilesFound = new HashSet<Tile>();
 
-        //Set initial tile
-        //Tile initialTile = _Tiles[sourceX, sourceY];
-        Tile initialTile = unit.tile;
         initialTile.movementNeed = 0;
         tilesToSearch.Add(initialTile);
         tilesFound.Add(initialTile);
-        int movement = unit.movement;
 
         while(tilesToSearch.Count != 0)
         {
             foreach(Tile tile in tilesToSearch)
             {
-                //List<Tile> neighbours = FindNeighbours(tile);
-
                 foreach(Tile neighbour in tile.neighbours)
                 {
-                    if (tilesFound.Contains(neighbour)) continue;
+                    if (neighbour == null) continue;
+
+                    if (tilesFound.Contains(neighbour) ||
+                        (neighbour.unitOnTile && checkUnits)) continue;
 
                     int cost = tile.movementNeed + neighbour.movementCost;
-                    if (movement >= cost)
+                    if (range >= cost)
                     {
                         neighbour.movementNeed = cost;
                         newTilesToSearch.Add(neighbour);
-                        neighbour.Highlight();
                     }
                 }
             }
@@ -82,7 +78,9 @@ public class GridBehaviour : MonoBehaviour
 
             foreach(Tile neighbour in nextTile.neighbours)
             {
-                float newDistance = nextTile.distanceFromStart + neighbour.movementCost;
+                if (neighbour == null) continue;
+
+                int newDistance = nextTile.distanceFromStart + neighbour.movementCost;
 
                 if(newDistance < neighbour.distanceFromStart)
                 {
@@ -96,7 +94,6 @@ public class GridBehaviour : MonoBehaviour
         Tile currentTile = endTile;
         while(currentTile != null)
         {
-            currentTile.Highlight();
             newPath.Add(currentTile);
             currentTile = currentTile.previusTile;
         }
