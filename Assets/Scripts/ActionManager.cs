@@ -23,17 +23,21 @@ namespace Brisanti.Tactics.Managment
                 SelectObject();
             }
 
+            /*return;
+
             if (Input.GetKeyDown(KeyCode.P) && _selectedUnit)
             {
                 _selectedUnit.RestoreUnit();
                 SelectUnit(_selectedUnit);
             }
+
+            */
         }
 
         //Selects an unit and show it's action possibilities
-        private void SelectUnit(Unit clickedUnit)
+        public void SelectUnit(Unit clickedUnit)
         {
-            if (clickedUnit.team != 0) return;
+            //if (clickedUnit.team != 0) return;
             _selectedUnit = clickedUnit;
 
             _tilesInMovementRange = _grid.GetTilesInRange(clickedUnit.ocupedTile, clickedUnit.movementLeft);
@@ -83,8 +87,8 @@ namespace Brisanti.Tactics.Managment
                     CheckForTile(objectFound)) return;
             }
 
-            _selectedUnit = null;
-            _grid.CleanTiles();
+            //_selectedUnit = null;
+            //_grid.CleanTiles();
         }
 
         //Checks if objectFound is an Unit and what to do with it 

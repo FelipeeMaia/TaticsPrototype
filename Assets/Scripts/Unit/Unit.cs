@@ -13,6 +13,8 @@ namespace Brisanti.Tactics.Core
         [SerializeField] int movement;
         [HideInInspector] public int movementLeft;
         public bool hasAttacked = false;
+        public int speed;
+        public int initiative;
 
         [Header("References")]
         public UnitHealth health;
