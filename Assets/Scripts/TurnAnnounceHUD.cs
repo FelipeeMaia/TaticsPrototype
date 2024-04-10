@@ -50,7 +50,7 @@ public class TurnAnnounceHUD : MonoBehaviour
     }
 
 
-    void Start()
+    void Awake()
     {
         _manager.OnTurnStart += AnnounceNewTurn;
     }

@@ -16,7 +16,7 @@ namespace Brisanti.Tactics.Managment
         private Unit _unitsTurn;
         public Action<Unit> OnTurnStart;
 
-        private void TurnStart(Unit unit)
+        private void StartTurn(Unit unit)
         {
             OnTurnStart?.Invoke(unit);
             _unitsTurn = unit;
@@ -25,7 +25,7 @@ namespace Brisanti.Tactics.Managment
             _actionManager.SelectUnit(unit);
         }
 
-        private void TurnEnd()
+        private void EndTurn()
         {
             _unitsTurn.initiative -= _initiativeNeed;
             RollQueue();
@@ -37,7 +37,7 @@ namespace Brisanti.Tactics.Managment
             {
                 Unit nextUnit = _nextInTurn[0];
                 _nextInTurn.RemoveAt(0);
-                TurnStart(nextUnit);
+                StartTurn(nextUnit);
             }
             else
             {
@@ -72,10 +72,16 @@ namespace Brisanti.Tactics.Managment
             _nextInTurn.Remove(unit);
         }
 
-        private void Start()
+        public void StartCombat(List<Unit> allUnits)
         {
             _nextInTurn = new List<Unit>();
-            _allUnits = FindObjectsOfType<Unit>().ToList();
+            _allUnits = allUnits;
+
+            foreach (Unit unit in _allUnits)
+            {
+                unit.health.OnDeath += OnUnitDeath;
+            }
+
             RunIniciative();
         }
 
@@ -83,7 +89,7 @@ namespace Brisanti.Tactics.Managment
         {
             if(Input.GetKeyDown(KeyCode.P))
             {
-                TurnEnd();
+                EndTurn();
             }
         }
 

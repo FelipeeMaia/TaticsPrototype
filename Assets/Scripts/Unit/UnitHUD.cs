@@ -29,7 +29,7 @@ namespace Brisanti.Tactics.Units.HUD
             _healthBar.fillAmount = (float)current / max;
         }
 
-        public void DisableHUD()
+        public void DisableHUD(Unit unit)
         {
             gameObject.SetActive(false);
         }

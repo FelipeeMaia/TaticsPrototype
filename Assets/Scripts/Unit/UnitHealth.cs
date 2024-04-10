@@ -1,3 +1,4 @@
+using Brisanti.Tactics.Core;
 using System;
 using UnityEngine;
 
@@ -7,9 +8,10 @@ namespace Brisanti.Tactics.Units
     {
         [SerializeField] int _currentHealth;
         [SerializeField] int _maxHealth;
+        [SerializeField] Unit _parent;
 
         public Action<int, int> OnChangeHealth;
-        public Action OnDeath;
+        public Action<Unit> OnDeath;
         public Action OnHit;
 
         private bool _isDead;
@@ -23,7 +25,7 @@ namespace Brisanti.Tactics.Units
 
             if (_currentHealth <= 0)
             {
-                OnDeath?.Invoke();
+                OnDeath?.Invoke(_parent);
                 _isDead = true;
             }
             else

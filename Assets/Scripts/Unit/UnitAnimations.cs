@@ -1,3 +1,4 @@
+using Brisanti.Tactics.Core;
 using UnityEngine;
 
 namespace Brisanti.Tactics.Units
@@ -28,8 +29,8 @@ namespace Brisanti.Tactics.Units
             _anim.SetTrigger("Hit");
         }
 
-        public void Die()
-        {
+        public void Die(Unit unit)
+        { 
             _anim.SetTrigger("Die");
         }
 

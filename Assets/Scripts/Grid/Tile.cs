@@ -49,7 +49,7 @@ namespace Brisanti.Tactics.Core
 
         private void Start()
         {
-            CleanUp();
+            //CleanUp();
         }
     }
 }

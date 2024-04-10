@@ -37,13 +37,14 @@ namespace Brisanti.Tactics.Managment
         //Selects an unit and show it's action possibilities
         public void SelectUnit(Unit clickedUnit)
         {
-            //if (clickedUnit.team != 0) return;
+            _grid.CleanTiles();
             _selectedUnit = clickedUnit;
 
             _tilesInMovementRange = _grid.GetTilesInRange(clickedUnit.ocupedTile, clickedUnit.movementLeft);
             foreach (Tile tile in _tilesInMovementRange)
             {
                 if (tile == _selectedUnit.ocupedTile) continue;
+                Debug.Log("OI");
                 tile.highlight.Movement();
             }
 

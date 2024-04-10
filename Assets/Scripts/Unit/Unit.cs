@@ -61,10 +61,13 @@ namespace Brisanti.Tactics.Core
             hasAttacked = false;
         }
 
-        public void Start()
+        public void SetupUnit(Tile startTile)
         {
-            ocupedTile = GameObject.Find("Tile: 0-0").GetComponent<Tile>();
             RestoreUnit();
+
+            ocupedTile = startTile;
+            ocupedTile.unitOnTile = this;
+            transform.position = startTile.transform.position;
         }
     }
 }

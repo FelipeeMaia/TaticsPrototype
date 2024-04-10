@@ -9,8 +9,13 @@ namespace Brisanti.Tactics.Core
 {
     public class GridBehaviour : MonoBehaviour
     {
-        //private Tile[,] _Tiles;
+        private Tile[,] _Tiles;
         public Action OnCleanTiles;
+
+        public Tile GetTile(int x, int y)
+        {
+            return (_Tiles[x, y]);
+        }
 
         //Get Tiles in range form an initial tile
         public HashSet<Tile> GetTilesInRange(Tile initialTile, int range, bool checkUnits = true)
@@ -115,7 +120,7 @@ namespace Brisanti.Tactics.Core
         {
             var creator = FindObjectOfType<GridCreator>();
             creator.CreateGrid();
-            //_Tiles = creator.CreateGrid();
+            _Tiles = creator.CreateGrid();
         }
     }
 }
