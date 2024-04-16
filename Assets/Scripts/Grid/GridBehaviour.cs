@@ -119,7 +119,6 @@ namespace Brisanti.Tactics.Core
         private void Awake()
         {
             var creator = FindObjectOfType<GridCreator>();
-            creator.CreateGrid();
             _Tiles = creator.CreateGrid();
         }
     }

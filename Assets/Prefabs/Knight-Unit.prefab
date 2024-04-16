@@ -3054,8 +3054,8 @@ GameObject:
   - component: {fileID: 4965278249145482016}
   - component: {fileID: 1999182607121944917}
   - component: {fileID: 4034076713713550721}
-  - component: {fileID: 2480534119739859842}
   - component: {fileID: 6637415993716846305}
+  - component: {fileID: 4687569767939433698}
   m_Layer: 0
   m_Name: UnitCanvas
   m_TagString: Untagged
@@ -3130,23 +3130,6 @@ MonoBehaviour:
   m_DefaultSpriteDPI: 96
   m_DynamicPixelsPerUnit: 1
   m_PresetInfoIsWorld: 1
---- !u!114 &2480534119739859842
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7312359097000586347}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dc42784cf147c0c48a680349fa168899, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_IgnoreReversedGraphics: 1
-  m_BlockingObjects: 0
-  m_BlockingMask:
-    serializedVersion: 2
-    m_Bits: 4294967295
 --- !u!114 &6637415993716846305
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3164,6 +3147,18 @@ MonoBehaviour:
   _healthBar: {fileID: 4038612225618408309}
   unit: {fileID: 2635654490789498017}
   _canvas: {fileID: 1999182607121944917}
+--- !u!225 &4687569767939433698
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7312359097000586347}
+  m_Enabled: 1
+  m_Alpha: 0.75
+  m_Interactable: 0
+  m_BlocksRaycasts: 0
+  m_IgnoreParentGroups: 0
 --- !u!1 &7321351129864412113
 GameObject:
   m_ObjectHideFlags: 0

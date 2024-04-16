@@ -1,4 +1,5 @@
 using Brisanti.Tactics.Core;
+using System.Collections;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -13,6 +14,11 @@ namespace Brisanti.Tactics.Units.HUD
         [SerializeField] Unit unit;
         [SerializeField] Canvas _canvas;
 
+        private float oldAmount = 1;
+        private Coroutine _coroutine;
+
+
+
         // Start is called before the first frame update
         void Awake()
         {
@@ -26,8 +32,30 @@ namespace Brisanti.Tactics.Units.HUD
         public void UpdateHealth(int current, int max)
         {
             _healthCounter.text = $"{current} / {max}";
-            _healthBar.fillAmount = (float)current / max;
+            float newAmount = (float)current / max;
+
+            if(_coroutine != null) StopCoroutine(_coroutine);
+
+            _coroutine = StartCoroutine(BarSmooth(oldAmount, newAmount));
+            oldAmount = newAmount;
         }
+
+        private IEnumerator BarSmooth(float oldValue, float newValue)
+        {
+            float time = 0;
+            float fillAmount = 0;
+
+            while (time < 1)
+            {
+                time += Time.fixedDeltaTime * 2;
+                fillAmount = Mathf.Lerp(oldValue, newValue, time);
+                _healthBar.fillAmount = fillAmount;
+
+                yield return new WaitForFixedUpdate();
+            }
+
+        }
+
 
         public void DisableHUD(Unit unit)
         {

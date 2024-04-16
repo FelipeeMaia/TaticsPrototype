@@ -44,7 +44,6 @@ namespace Brisanti.Tactics.Managment
             foreach (Tile tile in _tilesInMovementRange)
             {
                 if (tile == _selectedUnit.ocupedTile) continue;
-                Debug.Log("OI");
                 tile.highlight.Movement();
             }
 
@@ -84,6 +83,9 @@ namespace Brisanti.Tactics.Managment
             if (Physics.Raycast(ray, out hit))
             {
                 GameObject objectFound = hit.transform.gameObject;
+
+                Debug.Log(objectFound);
+
                 if (CheckForUnit(objectFound) ||
                     CheckForTile(objectFound)) return;
             }
