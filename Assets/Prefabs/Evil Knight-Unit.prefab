@@ -15,6 +15,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2635654490789498017, guid: acb06c83f7f550d478d43c1b964709da,
         type: 3}
+      propertyPath: uName
+      value: Evil Knight
+      objectReference: {fileID: 0}
+    - target: {fileID: 2635654490789498017, guid: acb06c83f7f550d478d43c1b964709da,
+        type: 3}
       propertyPath: movement
       value: 4
       objectReference: {fileID: 0}

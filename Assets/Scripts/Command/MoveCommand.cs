@@ -11,9 +11,9 @@ namespace Brisanti.Tactics.Commands
         public int distance;
 
 
-        public override void Prepare(Unit unit, Tile target)
+        public override bool Prepare(Unit unit, Tile target)
         {
-            throw new System.NotImplementedException();
+            return true;
         }
 
         public override void Unprepare()

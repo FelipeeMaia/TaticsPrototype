@@ -15,6 +15,7 @@ namespace Brisanti.Tactics.Core
         public bool hasAttacked = false;
         public int speed;
         public int initiative;
+        public string uName;
 
         [Header("References")]
         public UnitHealth health;

@@ -15,7 +15,7 @@ public class TurnAnnounceHUD : MonoBehaviour
 
     public void AnnounceNewTurn(Unit unit)
     {
-        _announcement.text = $"{unit.name}'s Turn";
+        _announcement.text = $"{unit.uName}'s Turn";
         _announcement.color = _teamColors[unit.team];
 
         StartCoroutine(FadeAnnouncement());
@@ -52,6 +52,9 @@ public class TurnAnnounceHUD : MonoBehaviour
 
     void Awake()
     {
+        if (_manager == null)
+            _manager = FindObjectOfType<TurnManager>();
+
         _manager.OnTurnStart += AnnounceNewTurn;
     }
 }

@@ -1192,6 +1192,7 @@ MonoBehaviour:
   hasAttacked: 0
   speed: 2
   initiative: 0
+  uName: Knight
   health: {fileID: 1184037312875003760}
   attack: {fileID: 3609322977159219151}
   _walker: {fileID: 5360417532896354908}

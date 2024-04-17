@@ -84,14 +84,9 @@ namespace Brisanti.Tactics.Managment
             {
                 GameObject objectFound = hit.transform.gameObject;
 
-                Debug.Log(objectFound);
-
                 if (CheckForUnit(objectFound) ||
                     CheckForTile(objectFound)) return;
             }
-
-            //_selectedUnit = null;
-            //_grid.CleanTiles();
         }
 
         //Checks if objectFound is an Unit and what to do with it 
