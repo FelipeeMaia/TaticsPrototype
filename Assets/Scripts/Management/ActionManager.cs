@@ -70,7 +70,7 @@ namespace Brisanti.Tactics.Managment
         private void AttackUnit(Unit target)
         {
             StartWaiting(_selectedUnit);
-            _selectedUnit.Attack(target);
+            _selectedUnit.Attack(target, 2);
             //waits for action end
         }
 

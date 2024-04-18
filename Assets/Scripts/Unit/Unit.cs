@@ -1,5 +1,6 @@
 using Brisanti.Tactics.Units;
 using System.Collections.Generic;
+using Brisanti.Tactics.Commands;
 using System.Linq;
 using UnityEngine;
 using System;
@@ -16,26 +17,27 @@ namespace Brisanti.Tactics.Core
         public int speed;
         public int initiative;
         public string uName;
+        public Command Commands;
 
         [Header("References")]
         public UnitHealth health;
         public UnitAttack attack;
-        [SerializeField] UnitWalker _walker;
+        [SerializeField] public UnitWalker walker;
         [SerializeField] UnitAnimations _animation;
         [HideInInspector] public Tile ocupedTile;
 
         public Action<Unit> OnActionEnd;
 
-        public void Attack(Unit target)
+        public void Attack(Unit target, int damage)
         {
             if (hasAttacked) return;
             hasAttacked = true;
 
             var targetPosition =  target.transform.position;
-            _walker.RotateTowards(targetPosition);
+            walker.RotateTowards(targetPosition);
 
             attack.OnAttackHit += ActionEnd;
-            attack.AimAt(target);
+            attack.AimAt(target, damage);
         }
 
         public void MoveUnit(List<Tile> path)
@@ -47,8 +49,8 @@ namespace Brisanti.Tactics.Core
             ocupedTile.unitOnTile = this;
 
             movementLeft -= endOfPathTile.distanceFromStart;
-            _walker.OnStopMoving += ActionEnd;
-            _walker.SetNewPath(path);
+            walker.OnStopMoving += ActionEnd;
+            walker.SetNewPath(path);
         }
 
         public void ActionEnd()

@@ -12,31 +12,53 @@ namespace Brisanti.Tactics.Commands
         public int damage;
         public int area;
 
-        protected Unit target;
+        protected Unit targetUnit;
 
-        public override bool Prepare(Unit unit, Tile targetTile)
+
+        public override bool Prepare(Tile selectedTile)
         {
-            myUnit = unit;
-            target = targetTile.unitOnTile;
+            if (!base.Prepare(selectedTile) ||
+                !CheckForEnemy(selectedTile)) return false;
 
-            if (target == null || unit.team == target.team) return false;
-
-            // ToDo:
-            //  - Highlight prepared action.
-            //  - Turn ghost toward target.
-
+            selectedTile.highlight.Attack();
             return true;
         }
 
         public override void Unprepare()
         {
+            targetUnit.ocupedTile.highlight.Clean();
+
             // ToDo:
             //  - Undo highlight.
             //  - Turn ghost toward original position.
         }
         public override void Execute()
         {
-            myUnit.Attack(target);
+            targetUnit.ocupedTile.highlight.Clean();
+            myUnit.Attack(targetUnit, damage);
+        }
+
+        protected override void VisualizeHighlight(Tile tile)
+        {
+            tile.highlight.Range(_tilesInRange, tile.neighbours);
+
+            if(CheckForEnemy(tile))
+            {
+                tile.highlight.Attack();
+            }
+        }
+
+        private bool CheckForEnemy(Tile tile)
+        {
+            bool tileHasEnemy = false;
+
+            Unit unitFound = tile.unitOnTile;
+            if (unitFound)
+            {
+                tileHasEnemy = myUnit.team != unitFound.team;
+            }
+
+            return tileHasEnemy;
         }
     }
 }

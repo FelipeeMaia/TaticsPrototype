@@ -15,8 +15,9 @@ namespace Brisanti.Tactics.Units
         public Action OnAttackHit;
 
         //Targets an unit, and start attacking
-        public void AimAt(Unit newTarget)
+        public void AimAt(Unit newTarget, int damage)
         {
+            this.damage = damage;
             target = newTarget;
             OnAttack?.Invoke();
         }
