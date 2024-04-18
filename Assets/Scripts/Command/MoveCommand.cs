@@ -1,8 +1,8 @@
-using Brisanti.Tactics.Core;
+using Tactics.Core;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Brisanti.Tactics.Commands
+namespace Tactics.Commands
 {
     [CreateAssetMenu(fileName = "newMovement", menuName = "Commands/moveComand", order = 2)]
     public class MoveCommand : Command

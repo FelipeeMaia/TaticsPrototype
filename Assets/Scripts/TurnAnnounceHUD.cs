@@ -1,60 +1,63 @@
-using Brisanti.Tactics.Core;
-using Brisanti.Tactics.Managment;
+using Tactics.Core;
+using Tactics.Managment;
 using System.Collections;
 using TMPro;
 using UnityEngine;
 
-public class TurnAnnounceHUD : MonoBehaviour
+namespace Tactics.HUD
 {
-    [SerializeField] TMP_Text _announcement;
-    [SerializeField] CanvasGroup _canvas;
-    [SerializeField] float _fadesTime;
-    [SerializeField] float _waitTime;
-    [SerializeField] Color[] _teamColors;
-    [SerializeField] TurnManager _manager;
-
-    public void AnnounceNewTurn(Unit unit)
+    public class TurnAnnounceHUD : MonoBehaviour
     {
-        _announcement.text = $"{unit.uName}'s Turn";
-        _announcement.color = _teamColors[unit.team];
+        [SerializeField] TMP_Text _announcement;
+        [SerializeField] CanvasGroup _canvas;
+        [SerializeField] float _fadesTime;
+        [SerializeField] float _waitTime;
+        [SerializeField] Color[] _teamColors;
+        [SerializeField] TurnManager _manager;
 
-        StartCoroutine(FadeAnnouncement());
-    }
-
-    private IEnumerator FadeAnnouncement()
-    {
-        _canvas.blocksRaycasts = true;
-        float time = 0;
-
-        while(time < 1)
+        public void AnnounceNewTurn(Unit unit)
         {
-            yield return new WaitForFixedUpdate();
-            time += Time.fixedDeltaTime * _fadesTime;
+            _announcement.text = $"{unit.uName}'s Turn";
+            _announcement.color = _teamColors[unit.team];
 
-            float fading = Mathf.SmoothStep(0, 1, time);
-            _canvas.alpha = fading;
+            StartCoroutine(FadeAnnouncement());
         }
 
-        yield return new WaitForSeconds(_waitTime);
-
-        while (time > 0)
+        private IEnumerator FadeAnnouncement()
         {
-            yield return new WaitForFixedUpdate();
-            time -= Time.fixedDeltaTime * _fadesTime;
+            _canvas.blocksRaycasts = true;
+            float time = 0;
 
-            float fading = Mathf.SmoothStep(0, 1, time);
-            _canvas.alpha = fading;
+            while (time < 1)
+            {
+                yield return new WaitForFixedUpdate();
+                time += Time.fixedDeltaTime * _fadesTime;
+
+                float fading = Mathf.SmoothStep(0, 1, time);
+                _canvas.alpha = fading;
+            }
+
+            yield return new WaitForSeconds(_waitTime);
+
+            while (time > 0)
+            {
+                yield return new WaitForFixedUpdate();
+                time -= Time.fixedDeltaTime * _fadesTime;
+
+                float fading = Mathf.SmoothStep(0, 1, time);
+                _canvas.alpha = fading;
+            }
+
+            _canvas.blocksRaycasts = false;
         }
 
-        _canvas.blocksRaycasts = false;
-    }
 
+        void Awake()
+        {
+            if (_manager == null)
+                _manager = FindObjectOfType<TurnManager>();
 
-    void Awake()
-    {
-        if (_manager == null)
-            _manager = FindObjectOfType<TurnManager>();
-
-        _manager.OnTurnStart += AnnounceNewTurn;
+            _manager.OnTurnStart += AnnounceNewTurn;
+        }
     }
 }

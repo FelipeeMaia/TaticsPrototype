@@ -1,9 +1,9 @@
-using Brisanti.Tactics.Tiles;
+using Tactics.Tiles;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Brisanti.Tactics.Core
+namespace Tactics.Core
 {
     public class Tile : MonoBehaviour
     {

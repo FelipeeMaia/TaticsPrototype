@@ -1,11 +1,11 @@
-using Brisanti.Tactics.Units;
+using Tactics.Units;
 using System.Collections.Generic;
-using Brisanti.Tactics.Commands;
+using Tactics.Commands;
 using System.Linq;
 using UnityEngine;
 using System;
 
-namespace Brisanti.Tactics.Core
+namespace Tactics.Core
 {
     public class Unit : MonoBehaviour
     {

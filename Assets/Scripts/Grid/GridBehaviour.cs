@@ -1,11 +1,10 @@
-using Brisanti.Tactics.Grids;
+using Tactics.Grids;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-namespace Brisanti.Tactics.Core
+namespace Tactics.Core
 {
     public class GridBehaviour : MonoBehaviour
     {

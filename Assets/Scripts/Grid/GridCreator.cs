@@ -1,8 +1,8 @@
-using Brisanti.Tactics.Core;
+using Tactics.Core;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Brisanti.Tactics.Grids
+namespace Tactics.Grids
 {
     public class GridCreator : MonoBehaviour
     {

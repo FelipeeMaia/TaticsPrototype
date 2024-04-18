@@ -1,8 +1,8 @@
-using Brisanti.Tactics.Core;
+using Tactics.Core;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Brisanti.Tactics.Tiles
+namespace Tactics.Tiles
 {
     public class TileHighlight : MonoBehaviour
     {

@@ -1,10 +1,10 @@
-using Brisanti.Tactics.Core;
+using Tactics.Core;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Brisanti.Tactics.Units
+namespace Tactics.Units
 {
     public class UnitWalker : MonoBehaviour
     {

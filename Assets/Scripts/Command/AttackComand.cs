@@ -1,10 +1,9 @@
-using Brisanti.Tactics.Commands;
-using Brisanti.Tactics.Core;
+using Tactics.Core;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Brisanti.Tactics.Commands
+namespace Tactics.Commands
 {
     [CreateAssetMenu(fileName = "newAttack", menuName = "Commands/attackComand", order = 1)]
     public class AttackComand : Command

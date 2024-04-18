@@ -1,10 +1,10 @@
-using Brisanti.Tactics.Core;
+using Tactics.Core;
 using System.Collections;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace Brisanti.Tactics.Units.HUD
+namespace Tactics.HUD
 {
     public class UnitHUD : MonoBehaviour
     {

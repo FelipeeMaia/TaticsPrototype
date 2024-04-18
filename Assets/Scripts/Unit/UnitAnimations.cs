@@ -1,7 +1,7 @@
-using Brisanti.Tactics.Core;
+using Tactics.Core;
 using UnityEngine;
 
-namespace Brisanti.Tactics.Units
+namespace Tactics.Units
 {
     public class UnitAnimations : MonoBehaviour
     {

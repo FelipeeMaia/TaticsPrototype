@@ -1,8 +1,8 @@
-using Brisanti.Tactics.Core;
+using Tactics.Core;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Brisanti.Tactics.Managment
+namespace Tactics.Managment
 {
     public class ActionManager : MonoBehaviour
     {

@@ -1,8 +1,8 @@
-using Brisanti.Tactics.Core;
+using Tactics.Core;
 using System;
 using UnityEngine;
 
-namespace Brisanti.Tactics.Units
+namespace Tactics.Units
 {
     public class UnitAttack : MonoBehaviour
     {
