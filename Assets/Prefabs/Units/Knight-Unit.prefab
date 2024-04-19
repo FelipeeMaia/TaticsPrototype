@@ -1193,9 +1193,12 @@ MonoBehaviour:
   speed: 2
   initiative: 0
   uName: Knight
+  Commands:
+  - {fileID: 11400000, guid: 3d25cdcea6a677140b5251b5d15dc5ac, type: 2}
+  - {fileID: 11400000, guid: 30d71a1b8bff67b40b5951079333c21f, type: 2}
   health: {fileID: 1184037312875003760}
   attack: {fileID: 3609322977159219151}
-  _walker: {fileID: 5360417532896354908}
+  walker: {fileID: 5360417532896354908}
   _animation: {fileID: 446821278457046477}
   ocupedTile: {fileID: 0}
 --- !u!114 &1184037312875003760

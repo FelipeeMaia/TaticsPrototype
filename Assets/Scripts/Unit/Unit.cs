@@ -17,7 +17,7 @@ namespace Tactics.Core
         public int speed;
         public int initiative;
         public string uName;
-        public Command Commands;
+        public List<Command> Commands;
 
         [Header("References")]
         public UnitHealth health;

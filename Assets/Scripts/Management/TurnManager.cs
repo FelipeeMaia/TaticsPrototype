@@ -8,7 +8,6 @@ namespace Tactics.Managment
 {
     public class TurnManager : MonoBehaviour
     {
-        [SerializeField] ActionManager _actionManager;
         [SerializeField] List<Unit> _allUnits;
         [SerializeField] List<Unit> _nextInTurn;
         [SerializeField] int _initiativeNeed;
@@ -22,10 +21,9 @@ namespace Tactics.Managment
             _unitsTurn = unit;
 
             unit.RestoreUnit();
-            _actionManager.SelectUnit(unit);
         }
 
-        private void EndTurn()
+        public void EndTurn()
         {
             _unitsTurn.initiative -= _initiativeNeed;
             RollQueue();

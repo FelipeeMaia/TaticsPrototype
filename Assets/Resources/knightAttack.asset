@@ -1,0 +1,19 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 402ad948c03687743b9ba8cff9660fa6, type: 3}
+  m_Name: knightAttack
+  m_EditorClassIdentifier: 
+  icon: {fileID: 21300000, guid: 30ad923225d69e047aaa38b10bc2d47c, type: 3}
+  highlightID: 0
+  range: 1
+  damage: 2
+  area: 1

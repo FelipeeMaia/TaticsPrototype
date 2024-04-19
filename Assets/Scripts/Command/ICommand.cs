@@ -31,6 +31,14 @@ namespace Tactics.Commands
 
         protected abstract void VisualizeHighlight(Tile tile);
 
+        public void Cancel()
+        {
+            foreach (Tile tile in _tilesInRange)
+            {
+                tile.highlight.Clean();
+            }
+        }
+
         public virtual bool Prepare(Tile selectedTile)
         {
             bool isTargetInRange = _tilesInRange.Contains(selectedTile);
