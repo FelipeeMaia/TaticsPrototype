@@ -13,16 +13,17 @@ namespace Tactics.Commands
         [Header("Stats")]
         public int range;
 
-
         protected HashSet<Tile> _tilesInRange;
-        protected Unit myUnit;
+        protected Unit _myUnit;
+        protected Tile _initialTile;
+        protected bool _avoidUnits = true;
 
-
-        public virtual void Visualize(Unit unit, GridBehaviour grid)
+        public virtual void Visualize(Unit unit, Tile initialTile, GridBehaviour grid)
         {
-            myUnit = unit;
+            _myUnit = unit;
+            _initialTile = initialTile;
 
-            _tilesInRange = grid.GetTilesInRange(unit.ocupedTile, range);
+            _tilesInRange = grid.GetTilesInRange(initialTile, range, _avoidUnits);
             foreach (Tile tile in _tilesInRange)
             {
                 VisualizeHighlight(tile);
@@ -39,14 +40,14 @@ namespace Tactics.Commands
             }
         }
 
-        public virtual bool Prepare(Tile selectedTile)
+        public virtual bool Prepare(Tile selectedTile, out Tile expectedPosition)
         {
             bool isTargetInRange = _tilesInRange.Contains(selectedTile);
 
             if(isTargetInRange)
             {
                 Vector3 targetPosition = selectedTile.transform.position;
-                myUnit.walker.RotateTowards(targetPosition);
+                _myUnit.walker.RotateTowards(targetPosition);
 
                 foreach (Tile tile in _tilesInRange)
                 {
@@ -54,10 +55,11 @@ namespace Tactics.Commands
                 }
             }
 
+            expectedPosition = _myUnit.ocupedTile;
             return isTargetInRange;
         }
 
-        public abstract void Unprepare();
+        public abstract void Unprepare(out Tile initialTile);
         public abstract void Execute();
     }
 }

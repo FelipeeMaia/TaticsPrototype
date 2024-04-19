@@ -11,21 +11,30 @@ namespace Tactics.Commands
         public int damage;
         public int area;
 
-        protected Unit targetUnit;
+        protected Unit _targetUnit;
 
-
-        public override bool Prepare(Tile selectedTile)
+        public override void Visualize(Unit unit, Tile expectedPosition, GridBehaviour grid)
         {
-            if (!base.Prepare(selectedTile) ||
-                !CheckForEnemy(selectedTile)) return false;
+            _avoidUnits = false;
+            base.Visualize(unit, expectedPosition, grid);
+        }
 
+        public override bool Prepare(Tile selectedTile, out Tile expectedPosition)
+        {
+            expectedPosition = _myUnit.ocupedTile;
+
+            if (!CheckForEnemy(selectedTile) ||
+                !base.Prepare(selectedTile, out expectedPosition)) return false;
+
+            _targetUnit = selectedTile.unitOnTile;
             selectedTile.highlight.Attack();
             return true;
         }
 
-        public override void Unprepare()
+        public override void Unprepare(out Tile initialTile)
         {
-            targetUnit.ocupedTile.highlight.Clean();
+            initialTile = _initialTile;
+            _targetUnit.ocupedTile.highlight.Clean();
 
             // ToDo:
             //  - Undo highlight.
@@ -33,8 +42,8 @@ namespace Tactics.Commands
         }
         public override void Execute()
         {
-            targetUnit.ocupedTile.highlight.Clean();
-            myUnit.Attack(targetUnit, damage);
+            _targetUnit.ocupedTile.highlight.Clean();
+            _myUnit.Attack(_targetUnit, damage);
         }
 
         protected override void VisualizeHighlight(Tile tile)
@@ -54,7 +63,7 @@ namespace Tactics.Commands
             Unit unitFound = tile.unitOnTile;
             if (unitFound)
             {
-                tileHasEnemy = myUnit.team != unitFound.team;
+                tileHasEnemy = _myUnit.team != unitFound.team;
             }
 
             return tileHasEnemy;

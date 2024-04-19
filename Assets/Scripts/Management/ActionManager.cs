@@ -62,6 +62,7 @@ namespace Tactics.Managment
             var path = _grid.GeneratePath(_selectedUnit.ocupedTile, clickedTile, _tilesInMovementRange);
             if (path == null) return;
 
+            Debug.Log(path.Count);
             _selectedUnit.MoveUnit(path);
             StartWaiting(_selectedUnit);
         }

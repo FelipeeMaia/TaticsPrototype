@@ -15,12 +15,15 @@ namespace Tactics.Managment
         private Unit _unitsTurn;
         public Action<Unit> OnTurnStart;
 
+        public ActionManager _action;
+
         private void StartTurn(Unit unit)
         {
             OnTurnStart?.Invoke(unit);
             _unitsTurn = unit;
 
             unit.RestoreUnit();
+            //_action.SelectUnit(unit);
         }
 
         public void EndTurn()

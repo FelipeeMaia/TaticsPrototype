@@ -19,10 +19,16 @@ namespace Tactics.Commands
 
         Command _selectedCommand;
         Unit _selectedUnit;
+        Tile _expectedTile;
 
         public void SelectUnit(Unit newUnit)
         {
             _selectedUnit = newUnit;
+            _selectedUnit.OnActionEnd += ExecuteCommands;
+            _expectedTile = newUnit.ocupedTile;
+
+            _grid.CleanTiles();
+
             _commandList = new List<Command>();
             commandCount = _commandList.Count;
         }
@@ -30,7 +36,7 @@ namespace Tactics.Commands
         public void VisualizeCommand(Command newCommand)
         {
             _selectedCommand = newCommand;
-            newCommand.Visualize(_selectedUnit, _grid);
+            newCommand.Visualize(_selectedUnit, _expectedTile, _grid);
         }
 
         public void CancelCommand()
@@ -41,12 +47,14 @@ namespace Tactics.Commands
 
         public void PrepareCommand(Tile selectedTile)
         {
-            bool success = _selectedCommand.Prepare(selectedTile);
-            if (success)
-            {
-                _commandList.Add(_selectedCommand);
-            }
+            if (!_selectedCommand) return;
 
+            Tile newExpected;
+            bool success = _selectedCommand.Prepare(selectedTile, out newExpected);
+            if (!success) return;
+
+            _expectedTile = newExpected;
+            _commandList.Add(_selectedCommand);
             commandCount = _commandList.Count;
             CommandPrepared?.Invoke(_selectedCommand);
         }
@@ -54,8 +62,12 @@ namespace Tactics.Commands
         public Command UnprepareCommand()
         {
             Command lastCommand = _commandList.Last();
-            lastCommand.Unprepare();
+            Tile newExpected;
+
+            lastCommand.Unprepare(out newExpected);
+            _expectedTile = newExpected;
             _commandList.Remove(lastCommand);
+
 
             commandCount = _commandList.Count;
             return lastCommand;
@@ -65,15 +77,14 @@ namespace Tactics.Commands
         {
             if (_commandList.Count > 0)
             {
-                _selectedUnit.OnActionEnd += ExecuteCommands;
-
                 var nextCommand = _commandList[0];
-                nextCommand.Execute();
-
                 _commandList.RemoveAt(0);
+
+                nextCommand.Execute();
             }
             else
             {
+                _selectedUnit.OnActionEnd -= ExecuteCommands;
                 _turnManager.EndTurn();
             }
         }

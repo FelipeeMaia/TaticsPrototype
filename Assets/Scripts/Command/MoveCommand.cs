@@ -10,49 +10,52 @@ namespace Tactics.Commands
         GridBehaviour _grid;
         List<Tile> _movementPath;
 
-        public override void Visualize(Unit unit, GridBehaviour grid)
+        public override void Visualize(Unit unit, Tile expectedPosition, GridBehaviour grid)
         {
             _grid = grid;
             range = unit.movementLeft;
 
-            base.Visualize(unit, grid);
+            base.Visualize(unit, expectedPosition, grid);
         }
 
         protected override void VisualizeHighlight(Tile tile)
         {
-            if (tile == myUnit.ocupedTile) return;
+            if (tile == _myUnit.ocupedTile) return;
             tile.highlight.Movement();
         }
 
-        public override bool Prepare(Tile selectedTile)
+        public override bool Prepare(Tile selectedTile, out Tile expectedPosition)
         {
-            if (!base.Prepare(selectedTile)) return false;
+            expectedPosition = null;
+            if (!base.Prepare(selectedTile, out expectedPosition)) return false;
 
-            Tile startTile = myUnit.ocupedTile;
+            Tile startTile = _myUnit.ocupedTile;
             _movementPath = _grid.GeneratePath(startTile, selectedTile, _tilesInRange);
 
-            foreach(Tile tile in _movementPath)
+            foreach (Tile tile in _movementPath)
             {
                 tile.highlight.Movement();
                 //ToDo: highlight arrowshaped
             }
-            
+
+            expectedPosition = selectedTile;
             return true;
         }
 
-        public override void Unprepare()
+        public override void Unprepare(out Tile initialTile)
         {
             foreach (Tile tile in _movementPath)
             {
                 tile.highlight.Clean();
             }
 
+            initialTile = _initialTile;
             _movementPath = null;
         }
 
         public override void Execute()
         {
-            myUnit.MoveUnit(_movementPath);
+            _myUnit.MoveUnit(_movementPath);
         }
     
     }

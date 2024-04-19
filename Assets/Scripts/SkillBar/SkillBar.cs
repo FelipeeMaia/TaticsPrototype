@@ -19,7 +19,7 @@ namespace Tactics.SkillBar
         private const int buttonCount = 3;
 
         [SerializeField] TurnManager _turnManager;
-        [SerializeField] CommandManager _commandManager;
+        [SerializeField] CommandManager _commander;
 
         public void SetupBar(Unit unit)
         {
@@ -43,7 +43,7 @@ namespace Tactics.SkillBar
 
         public void SendCommand(Command command)
         {
-            _commandManager.VisualizeCommand(command);
+            _commander.VisualizeCommand(command);
 
             _skillBar.SetActive(false);
             _cancelBar.SetActive(true);
@@ -51,7 +51,7 @@ namespace Tactics.SkillBar
 
         public void UnprepareCommand()
         {
-            var command = _commandManager.UnprepareCommand();
+            var command = _commander.UnprepareCommand();
 
             int i = _skills.IndexOf(command);
             _buttons[i].EnableDisable(true);
@@ -62,12 +62,12 @@ namespace Tactics.SkillBar
         public void ExecuteCommands()
         {
             _skillBar.SetActive(false);
-            _commandManager.ExecuteCommands();
+            _commander.ExecuteCommands();
         }
 
         public void CancelCommand()
         {
-            _commandManager.CancelCommand();
+            _commander.CancelCommand();
 
             _cancelBar.SetActive(false);
             _skillBar.SetActive(true);
@@ -85,7 +85,7 @@ namespace Tactics.SkillBar
 
         private void CheckUnprepare()
         {
-            int count = _commandManager.commandCount;
+            int count = _commander.commandCount;
             bool canUnprepare = count > 0;
             _unprepareButton.interactable = canUnprepare;
         }
@@ -93,7 +93,7 @@ namespace Tactics.SkillBar
         private void Awake()
         {
             _turnManager.OnTurnStart += SetupBar;
-            _commandManager.CommandPrepared += OnCommandPrepared;
+            _commander.CommandPrepared += OnCommandPrepared;
 
             foreach(var button in _buttons)
             {

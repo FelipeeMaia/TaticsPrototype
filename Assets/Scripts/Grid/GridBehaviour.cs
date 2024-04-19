@@ -64,8 +64,7 @@ namespace Tactics.Core
 
             startTile.distanceFromStart = 0;
 
-            List<Tile> unvisitedTiles = new List<Tile>();
-            unvisitedTiles = tilesInRange.ToList();
+            List<Tile> unvisitedTiles = tilesInRange.ToList();
 
             while (unvisitedTiles.Count != 0)
             {
