@@ -8,7 +8,11 @@ namespace Tactics.Tiles
     {
         [SerializeField] GameObject _movementHighlight;
         [SerializeField] GameObject _attackHighlight;
+        [SerializeField] GameObject _targetHighlight;
+
+        //0 - Right, 1 - Left, 2 - Up, 3 - Down
         [SerializeField] GameObject[] _rangeHighlights;
+        [SerializeField] GameObject[] _pathHighlights;
 
 
         public void Movement()
@@ -22,27 +26,60 @@ namespace Tactics.Tiles
             _attackHighlight.SetActive(true);
         }
 
-        public void Range(HashSet<Tile> _tilesInRange, List<Tile> neighbours)
+        public void Range(HashSet<Tile> tilesInRange, List<Tile> neighbours)
         {
             for (int i = 0; i < 4; i++)
             {
-                bool isLimitOfRange;
+                bool activeBorder;
 
-                isLimitOfRange = (neighbours[i] != null &&
-                    _tilesInRange.Contains(neighbours[i]));
+                activeBorder = (neighbours[i] != null &&
+                    tilesInRange.Contains(neighbours[i]));
 
-                _rangeHighlights[i].SetActive(!isLimitOfRange);
+                _rangeHighlights[i].SetActive(!activeBorder);
             }
         }
 
-        public void Clean()
+        public void Path(List<Tile> path, List<Tile> neighbours, bool arrowHead)
         {
-            _movementHighlight.SetActive(false);
+            for (int i = 0; i < 4; i++)
+            {
+                bool pathOn;
+
+                pathOn = (neighbours[i] != null &&
+                    path.Contains(neighbours[i]));
+
+                int index = arrowHead ? i + 4 : i;
+                _pathHighlights[index].SetActive(pathOn);
+            }
+        }
+
+        public void CleanAttack()
+        {
             _attackHighlight.SetActive(false);
+
             foreach (GameObject side in _rangeHighlights)
             {
                 side.SetActive(false);
             }
+        }
+
+        public void CleanMovement()
+        {
+            _movementHighlight.SetActive(false);
+
+            foreach (GameObject side in _pathHighlights)
+            {
+                side.SetActive(false);
+            }
+        }
+
+        public void Clean(int id = 3)
+        {
+            if(id != 0)
+                CleanAttack();
+
+            if(id != 1)
+            CleanMovement();
         }
     }
 }

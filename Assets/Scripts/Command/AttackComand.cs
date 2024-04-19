@@ -16,6 +16,8 @@ namespace Tactics.Commands
         public override void Visualize(Unit unit, Tile expectedPosition, GridBehaviour grid)
         {
             _avoidUnits = false;
+            _highlightID = 1;
+
             base.Visualize(unit, expectedPosition, grid);
         }
 
@@ -34,7 +36,7 @@ namespace Tactics.Commands
         public override void Unprepare(out Tile initialTile)
         {
             initialTile = _initialTile;
-            _targetUnit.ocupedTile.highlight.Clean();
+            _targetUnit.ocupedTile.highlight.CleanAttack(); ;
 
             // ToDo:
             //  - Undo highlight.
@@ -42,7 +44,7 @@ namespace Tactics.Commands
         }
         public override void Execute()
         {
-            _targetUnit.ocupedTile.highlight.Clean();
+            _targetUnit.ocupedTile.highlight.CleanAttack();
             _myUnit.Attack(_targetUnit, damage);
         }
 

@@ -8,7 +8,6 @@ namespace Tactics.Commands
     {
         [Header("UI")]
         public Sprite icon;
-        public int highlightID;
 
         [Header("Stats")]
         public int range;
@@ -16,6 +15,7 @@ namespace Tactics.Commands
         protected HashSet<Tile> _tilesInRange;
         protected Unit _myUnit;
         protected Tile _initialTile;
+        protected int _highlightID;
         protected bool _avoidUnits = true;
 
         public virtual void Visualize(Unit unit, Tile initialTile, GridBehaviour grid)
@@ -36,7 +36,7 @@ namespace Tactics.Commands
         {
             foreach (Tile tile in _tilesInRange)
             {
-                tile.highlight.Clean();
+                tile.highlight.Clean(_highlightID);
             }
         }
 
@@ -51,7 +51,7 @@ namespace Tactics.Commands
 
                 foreach (Tile tile in _tilesInRange)
                 {
-                    tile.highlight.Clean();
+                    tile.highlight.Clean(_highlightID);
                 }
             }
 

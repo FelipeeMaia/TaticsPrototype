@@ -14,6 +14,7 @@ namespace Tactics.Commands
         {
             _grid = grid;
             range = unit.movementLeft;
+            _highlightID = 0;
 
             base.Visualize(unit, expectedPosition, grid);
         }
@@ -34,7 +35,8 @@ namespace Tactics.Commands
 
             foreach (Tile tile in _movementPath)
             {
-                tile.highlight.Movement();
+                bool last = tile == selectedTile;
+                tile.highlight.Path(_movementPath, tile.neighbours, last);
                 //ToDo: highlight arrowshaped
             }
 
@@ -46,7 +48,7 @@ namespace Tactics.Commands
         {
             foreach (Tile tile in _movementPath)
             {
-                tile.highlight.Clean();
+                tile.highlight.CleanMovement();
             }
 
             initialTile = _initialTile;
