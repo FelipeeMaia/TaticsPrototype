@@ -3,6 +3,7 @@ using System.Collections;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using Tactics.Constants;
 
 namespace Tactics.HUD
 {
@@ -20,13 +21,16 @@ namespace Tactics.HUD
 
 
         // Start is called before the first frame update
-        void Awake()
+        void OnEnable()
         {
             _canvas.worldCamera = Camera.main;
             _nameHolder.text = unit.uName;
 
             unit.health.OnChangeHealth += UpdateHealth;
             unit.health.OnDeath += DisableHUD;
+
+            Color teamColor = Colors.GetTeamColor(unit.team);
+            _nameHolder.color = teamColor;
         }
 
         public void UpdateHealth(int current, int max)
@@ -55,7 +59,6 @@ namespace Tactics.HUD
             }
 
         }
-
 
         public void DisableHUD(Unit unit)
         {

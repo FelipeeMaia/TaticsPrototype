@@ -3,6 +3,7 @@ using Tactics.Managment;
 using System.Collections;
 using TMPro;
 using UnityEngine;
+using Tactics.Constants;
 
 namespace Tactics.HUD
 {
@@ -12,13 +13,14 @@ namespace Tactics.HUD
         [SerializeField] CanvasGroup _canvas;
         [SerializeField] float _fadesTime;
         [SerializeField] float _waitTime;
-        [SerializeField] Color[] _teamColors;
         [SerializeField] TurnManager _manager;
 
         public void AnnounceNewTurn(Unit unit)
         {
+            Color teamColor = Colors.GetTeamColor(unit.team);
+
             _announcement.text = $"{unit.uName}'s Turn";
-            _announcement.color = _teamColors[unit.team];
+            _announcement.color = teamColor;
 
             StartCoroutine(FadeAnnouncement());
         }
