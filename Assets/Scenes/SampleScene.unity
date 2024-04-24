@@ -1388,7 +1388,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: df58838f42d440d409c8d7213f5a39ef, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  initiativeTime: 0.25
+  _initiativeTime: 0.25
+  _endTurnTime: 0.25
   _allUnits: []
   _nextInTurn: []
   _initiativeNeed: 10

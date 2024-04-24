@@ -8,12 +8,21 @@ namespace Tactics.Tiles
     {
         [SerializeField] GameObject _movementHighlight;
         [SerializeField] GameObject _attackHighlight;
-        [SerializeField] GameObject _targetHighlight;
+        [SerializeField] GameObject _mouseHighlight;
 
         //0 - Right, 1 - Left, 2 - Up, 3 - Down
         [SerializeField] GameObject[] _rangeHighlights;
         [SerializeField] GameObject[] _pathHighlights;
 
+        private void OnMouseEnter()
+        {
+            _mouseHighlight.SetActive(true);
+        }
+
+        private void OnMouseExit()
+        {
+            _mouseHighlight.SetActive(false);
+        }
 
         public void Movement()
         {

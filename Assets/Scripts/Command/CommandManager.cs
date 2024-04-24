@@ -85,7 +85,7 @@ namespace Tactics.Commands
             else
             {
                 _selectedUnit.OnActionEnd -= ExecuteCommands;
-                _turnManager.EndTurn();
+                _turnManager.Invoke("EndTurn", 0.25f);
             }
         }
 

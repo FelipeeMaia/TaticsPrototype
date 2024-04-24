@@ -8,7 +8,8 @@ namespace Tactics.Managment
 {
     public class TurnManager : MonoBehaviour
     {
-        [SerializeField] float initiativeTime;
+        [SerializeField] float _initiativeTime;
+        [SerializeField] float _endTurnTime;
 
         [SerializeField] List<Unit> _allUnits;
         [SerializeField] List<Unit> _nextInTurn;
@@ -26,7 +27,7 @@ namespace Tactics.Managment
         public void EndTurn()
         {
             _selectedUnit.initiative.RollBack(_initiativeNeed);
-            Invoke("RollQueue", 1f);
+            Invoke("RollQueue", _endTurnTime);
         }
 
         private void RollQueue()
@@ -39,7 +40,7 @@ namespace Tactics.Managment
             }
             else
             {
-                Invoke("RunIniciative", initiativeTime);
+                Invoke("RunIniciative", _initiativeTime);
             }
         }
 
@@ -61,7 +62,7 @@ namespace Tactics.Managment
             }
             else
             {
-                Invoke("RunIniciative", initiativeTime);
+                Invoke("RunIniciative", _initiativeTime);
             }
         }
 
