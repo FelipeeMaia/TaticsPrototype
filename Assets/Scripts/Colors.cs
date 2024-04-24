@@ -9,11 +9,8 @@ namespace Tactics.Constants
         private static Color _team2 = Color.magenta;
 
         //Lifebar colors
-        private static Color _full = Color.green;
-        private static Color _half = Color.yellow;
-        private static Color _low = Color.red;
-        private static Color[] _lifeColors = 
-            new Color[3] { _low, _half, _full };
+        private static Color[] _lifeColors = new Color[3] 
+            { Color.red, Color.yellow, Color.green };
 
 
         public static Color GetTeamColor(int team)
@@ -29,7 +26,7 @@ namespace Tactics.Constants
 
         public static Color GetLifeColor(float lifePercent)
         {
-            if (lifePercent == 1) return _full;
+            if (lifePercent == 1) return _lifeColors[2];
 
             float scaledPercent = lifePercent * (_lifeColors.Length - 1);
             Color firstColor = _lifeColors[(int)scaledPercent];

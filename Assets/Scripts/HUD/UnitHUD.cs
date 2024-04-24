@@ -38,6 +38,8 @@ namespace Tactics.HUD
             _healthCounter.text = $"{current} / {max}";
             float newAmount = (float)current / max;
 
+            if (oldAmount == newAmount) return;
+
             if(_coroutine != null) StopCoroutine(_coroutine);
 
             _coroutine = StartCoroutine(BarSmooth(oldAmount, newAmount));
