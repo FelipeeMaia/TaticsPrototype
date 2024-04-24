@@ -23,7 +23,7 @@ namespace Tactics.HUD
         void Awake()
         {
             _canvas.worldCamera = Camera.main;
-            _nameHolder.text = unit.name;
+            _nameHolder.text = unit.uName;
 
             unit.health.OnChangeHealth += UpdateHealth;
             unit.health.OnDeath += DisableHUD;

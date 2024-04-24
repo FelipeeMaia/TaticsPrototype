@@ -13,7 +13,6 @@ namespace Tactics.Commands
         public override void Visualize(Unit unit, Tile expectedPosition, GridBehaviour grid)
         {
             _grid = grid;
-            range = unit.movementLeft;
             _highlightID = 0;
 
             base.Visualize(unit, expectedPosition, grid);

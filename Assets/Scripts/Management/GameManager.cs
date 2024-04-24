@@ -18,6 +18,7 @@ namespace Tactics.Managment
         [SerializeField] List<Unit> _team1Units;
         [SerializeField] List<Unit> _team2Units;
 
+        public Action<Unit> OnUnitSpawn;
 
         // Start is called before the first frame update
         void Start()
@@ -25,7 +26,8 @@ namespace Tactics.Managment
             _team1Units = new List<Unit>();
             _team2Units = new List<Unit>();
             var allUnits = SpawnUnits();
-            _turnManager.StartCombat(allUnits);
+
+            _turnManager.StartTurns(allUnits);
         }
 
         private List<Unit> SpawnUnits()
@@ -51,6 +53,8 @@ namespace Tactics.Managment
 
                 else if (newUnit.team == 1)
                     _team2Units.Add(newUnit);
+
+                OnUnitSpawn?.Invoke(newUnit);
             }
 
             return unitsSpawn;

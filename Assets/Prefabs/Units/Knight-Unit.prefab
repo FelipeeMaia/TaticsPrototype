@@ -1129,6 +1129,7 @@ GameObject:
   - component: {fileID: 2635654490789498017}
   - component: {fileID: 1184037312875003760}
   - component: {fileID: 5360417532896354908}
+  - component: {fileID: 3101945729883446573}
   m_Layer: 0
   m_Name: Knight-Unit
   m_TagString: Untagged
@@ -1186,18 +1187,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fa760ae9e5afdcc4496b89c0abe2309c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  team: 0
-  movement: 4
-  movementLeft: 0
-  hasAttacked: 0
-  speed: 2
-  initiative: 0
   uName: Knight
+  team: 0
   Commands:
   - {fileID: 11400000, guid: 3d25cdcea6a677140b5251b5d15dc5ac, type: 2}
   - {fileID: 11400000, guid: 30d71a1b8bff67b40b5951079333c21f, type: 2}
   health: {fileID: 1184037312875003760}
   attack: {fileID: 3609322977159219151}
+  initiative: {fileID: 3101945729883446573}
   walker: {fileID: 5360417532896354908}
   _animation: {fileID: 446821278457046477}
   ocupedTile: {fileID: 0}
@@ -1229,6 +1226,21 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _graffics: {fileID: 5774106031344795402}
+--- !u!114 &3101945729883446573
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2682289367840104351}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0fe188a956abedd49a5b8eef9403a027, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ammount: 0
+  _speed: 2
+  _parent: {fileID: 2635654490789498017}
 --- !u!1 &3032629796769718426
 GameObject:
   m_ObjectHideFlags: 0

@@ -10,18 +10,14 @@ namespace Tactics.Core
     public class Unit : MonoBehaviour
     {
         [Header("Unit Stats")]
-        public int team;
-        [SerializeField] int movement;
-        [HideInInspector] public int movementLeft;
-        public bool hasAttacked = false;
-        public int speed;
-        public int initiative;
         public string uName;
+        public int team;
         public List<Command> Commands;
 
         [Header("References")]
         public UnitHealth health;
         public UnitAttack attack;
+        public UnitInitiative initiative;
         [SerializeField] public UnitWalker walker;
         [SerializeField] UnitAnimations _animation;
         [HideInInspector] public Tile ocupedTile;
@@ -30,9 +26,6 @@ namespace Tactics.Core
 
         public void Attack(Unit target, int damage)
         {
-            if (hasAttacked) return;
-            hasAttacked = true;
-
             var targetPosition =  target.transform.position;
             walker.RotateTowards(targetPosition);
 
@@ -48,7 +41,6 @@ namespace Tactics.Core
             ocupedTile = endOfPathTile;
             ocupedTile.unitOnTile = this;
 
-            movementLeft -= endOfPathTile.distanceFromStart;
             walker.OnStopMoving += ActionEnd;
             walker.SetNewPath(path);
         }
@@ -58,16 +50,8 @@ namespace Tactics.Core
             OnActionEnd?.Invoke(this);
         }
 
-        public void RestoreUnit()
-        {
-            movementLeft = movement;
-            hasAttacked = false;
-        }
-
         public void SetupUnit(Tile startTile)
         {
-            RestoreUnit();
-
             ocupedTile = startTile;
             ocupedTile.unitOnTile = this;
             transform.position = startTile.transform.position;

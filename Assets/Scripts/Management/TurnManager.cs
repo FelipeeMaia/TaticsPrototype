@@ -8,28 +8,25 @@ namespace Tactics.Managment
 {
     public class TurnManager : MonoBehaviour
     {
+        [SerializeField] float initiativeTime;
+
         [SerializeField] List<Unit> _allUnits;
         [SerializeField] List<Unit> _nextInTurn;
         [SerializeField] int _initiativeNeed;
 
-        private Unit _unitsTurn;
+        private Unit _selectedUnit;
         public Action<Unit> OnTurnStart;
-
-        public ActionManager _action;
 
         private void StartTurn(Unit unit)
         {
             OnTurnStart?.Invoke(unit);
-            _unitsTurn = unit;
-
-            unit.RestoreUnit();
-            //_action.SelectUnit(unit);
+            _selectedUnit = unit;
         }
 
         public void EndTurn()
         {
-            _unitsTurn.initiative -= _initiativeNeed;
-            RollQueue();
+            _selectedUnit.initiative.RollBack(_initiativeNeed);
+            Invoke("RollQueue", 1f);
         }
 
         private void RollQueue()
@@ -42,29 +39,30 @@ namespace Tactics.Managment
             }
             else
             {
-                RunIniciative();
+                Invoke("RunIniciative", initiativeTime);
             }
         }
 
         public void RunIniciative()
         {
-            //ToDo:
-            //use inumerator to put a wait between cicles to animate UI
-
-            while (_nextInTurn.Count == 0)
+            foreach (var unit in _allUnits)
             {
-                foreach (var unit in _allUnits)
+                unit.initiative.Advance();
+                if (unit.initiative.ammount >= _initiativeNeed)
                 {
-                    unit.initiative += unit.speed;
-                    if (unit.initiative >= _initiativeNeed)
-                    {
-                        _nextInTurn.Add(unit);
-                    }
+                    _nextInTurn.Add(unit);
                 }
             }
 
-            _nextInTurn.OrderBy(unit => unit.initiative);
-            RollQueue();
+            if (_nextInTurn.Count != 0)
+            {
+                _nextInTurn.OrderBy(unit => unit.initiative);
+                RollQueue();
+            }
+            else
+            {
+                Invoke("RunIniciative", initiativeTime);
+            }
         }
 
         public void OnUnitDeath(Unit unit)
@@ -73,7 +71,7 @@ namespace Tactics.Managment
             _nextInTurn.Remove(unit);
         }
 
-        public void StartCombat(List<Unit> allUnits)
+        public void StartTurns(List<Unit> allUnits)
         {
             _nextInTurn = new List<Unit>();
             _allUnits = allUnits;
@@ -85,14 +83,5 @@ namespace Tactics.Managment
 
             RunIniciative();
         }
-
-        private void Update()
-        {
-            if(Input.GetKeyDown(KeyCode.P))
-            {
-                EndTurn();
-            }
-        }
-
     }
 }
