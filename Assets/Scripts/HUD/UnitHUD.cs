@@ -53,7 +53,11 @@ namespace Tactics.HUD
             {
                 time += Time.fixedDeltaTime * 2;
                 fillAmount = Mathf.Lerp(oldValue, newValue, time);
+                Color lifeColor = Colors.GetLifeColor(fillAmount);
+                lifeColor.a = 0.8f;
+
                 _healthBar.fillAmount = fillAmount;
+                _healthBar.color = lifeColor;
 
                 yield return new WaitForFixedUpdate();
             }
