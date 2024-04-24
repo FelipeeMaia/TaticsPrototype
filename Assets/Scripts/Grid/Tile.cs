@@ -33,8 +33,23 @@ namespace Tactics.Core
             gameObject.name = $"Tile: {x}-{y}";
             transform.localPosition = new Vector3(x * spacing, 0, y * spacing);
 
+            SetMaterial();
+            SetRotation();
+        }
+
+        private void SetMaterial()
+        {
             int offsetID = (x + y) % 2;
             _renderer.material = _materials[offsetID];
+        }
+
+        private void SetRotation()
+        {
+            float x = Random.Range(-2, 3);
+            float z = Random.Range(-2, 3);
+
+            Vector3 rotation = new Vector3(x, 0, z);
+            transform.rotation = Quaternion.Euler(rotation);
         }
 
         //Set tile to default state
@@ -45,11 +60,6 @@ namespace Tactics.Core
             previusTile = null;
 
             highlight.Clean();
-        }
-
-        private void Start()
-        {
-            //CleanUp();
         }
     }
 }
