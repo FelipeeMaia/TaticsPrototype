@@ -11,13 +11,14 @@ namespace Tactics.Core
     {
         [Header("Unit Stats")]
         public string uName;
+        public Sprite icon;
         public int team;
+        public int speed;
         public List<Command> Commands;
 
         [Header("References")]
         public UnitHealth health;
         public UnitAttack attack;
-        public UnitInitiative initiative;
         [SerializeField] public UnitWalker walker;
         [SerializeField] UnitAnimations _animation;
         [HideInInspector] public Tile ocupedTile;

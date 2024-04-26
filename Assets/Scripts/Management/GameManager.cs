@@ -14,7 +14,6 @@ namespace Tactics.Managment
         [SerializeField] Unit[] _unitsToSpawn;
         [SerializeField] Vector2[] _whereToSpawn;
 
-
         [SerializeField] List<Unit> _team1Units;
         [SerializeField] List<Unit> _team2Units;
 

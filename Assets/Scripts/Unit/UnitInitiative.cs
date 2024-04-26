@@ -1,5 +1,4 @@
 using System;
-using Tactics.Core;
 using UnityEngine;
 
 namespace Tactics.Units
@@ -8,20 +7,19 @@ namespace Tactics.Units
     {
         public float ammount;
         [SerializeField] int _speed;
-        [SerializeField] Unit _parent;
 
-        public Action<Unit, float> OnInitiativeChange;
+        public Action<float> OnInitiativeChange;
 
         public void Advance()
         {
             ammount += _speed;
-            OnInitiativeChange?.Invoke(_parent, ammount);
+            OnInitiativeChange?.Invoke(ammount);
         }
 
-        public void RollBack(int initiativeNedded)
+        public void RollBack(int ammountUsed)
         {
-            ammount -= initiativeNedded;
-            OnInitiativeChange?.Invoke(_parent, ammount);
+            ammount -= ammountUsed;
+            OnInitiativeChange?.Invoke(ammount);
         }
     }
 }

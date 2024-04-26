@@ -254,8 +254,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b8459055f3e52c340b3fc332f57b2ceb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _lerpTime: 0.25
   _sliderContainer: {fileID: 7313569695322590001}
-  _gameManager: {fileID: 0}
-  _sliderPrefab: {fileID: 6447559817944829742, guid: 63393c759aba9c1458928410648dfc52,
+  _sliderPrefab: {fileID: 4555001786112354884, guid: 63393c759aba9c1458928410648dfc52,
     type: 3}
+  _gameManager: {fileID: 0}

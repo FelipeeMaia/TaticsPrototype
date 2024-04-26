@@ -8,31 +8,31 @@ namespace Tactics.Managment
 {
     public class TurnManager : MonoBehaviour
     {
-        [SerializeField] float _initiativeTime;
         [SerializeField] float _endTurnTime;
 
-        [SerializeField] List<Unit> _allUnits;
+        public List<Unit> allUnits;
         [SerializeField] List<Unit> _nextInTurn;
         [SerializeField] int _initiativeNeed;
+        private Dictionary<Unit, int> _Initiatives;
 
-        private Unit _selectedUnit;
         public Action<Unit> OnTurnStart;
+        public Action<Unit> OnTurnStacked;
+        public Action OnTurnEnd;
 
         private void StartTurn(Unit unit)
         {
             OnTurnStart?.Invoke(unit);
-            _selectedUnit = unit;
         }
 
         public void EndTurn()
         {
-            _selectedUnit.initiative.RollBack(_initiativeNeed);
-            Invoke("RollQueue", _endTurnTime);
+            OnTurnEnd?.Invoke();
+            Invoke("PickNext", _endTurnTime);
         }
 
-        private void RollQueue()
+        private void PickNext()
         {
-            if(_nextInTurn.Count > 0)
+            if(_nextInTurn.Count >= 8)
             {
                 Unit nextUnit = _nextInTurn[0];
                 _nextInTurn.RemoveAt(0);
@@ -40,46 +40,49 @@ namespace Tactics.Managment
             }
             else
             {
-                Invoke("RunIniciative", _initiativeTime);
+                RunIniciative();
             }
         }
 
         public void RunIniciative()
         {
-            foreach (var unit in _allUnits)
+            while(_nextInTurn.Count < 8)
             {
-                unit.initiative.Advance();
-                if (unit.initiative.ammount >= _initiativeNeed)
+                foreach (var unit in allUnits)
                 {
-                    _nextInTurn.Add(unit);
+                    int initiative = _Initiatives[unit];
+                    initiative += unit.speed;
+
+                    if (initiative >= _initiativeNeed)
+                    {
+                        _nextInTurn.Add(unit);
+                        OnTurnStacked?.Invoke(unit);
+                        initiative -= _initiativeNeed;
+                    }
+
+                    _Initiatives[unit] = initiative;
                 }
             }
 
-            if (_nextInTurn.Count != 0)
-            {
-                _nextInTurn.OrderBy(unit => unit.initiative);
-                RollQueue();
-            }
-            else
-            {
-                Invoke("RunIniciative", _initiativeTime);
-            }
+            PickNext();
         }
 
         public void OnUnitDeath(Unit unit)
         {
-            _allUnits.Remove(unit);
+            allUnits.Remove(unit);
             _nextInTurn.Remove(unit);
         }
 
         public void StartTurns(List<Unit> allUnits)
         {
+            _Initiatives = new Dictionary<Unit, int>();
             _nextInTurn = new List<Unit>();
-            _allUnits = allUnits;
+            this.allUnits = allUnits;
 
-            foreach (Unit unit in _allUnits)
+            foreach (Unit unit in this.allUnits)
             {
                 unit.health.OnDeath += OnUnitDeath;
+                _Initiatives[unit] = 0;
             }
 
             RunIniciative();
