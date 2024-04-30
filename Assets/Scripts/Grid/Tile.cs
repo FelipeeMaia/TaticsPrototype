@@ -17,7 +17,7 @@ namespace Tactics.Core
         [HideInInspector] public List<Tile> neighbours;
         [HideInInspector] public int movementNeed;
         [HideInInspector] public int distanceFromStart;
-        public Tile previusTile;
+        [HideInInspector] public Tile previusTile;
 
         [Header("References")]
         public TileHighlight highlight;

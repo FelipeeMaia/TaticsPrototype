@@ -60,6 +60,7 @@ namespace Tactics.Commands
         }
 
         public abstract void Unprepare(out Tile initialTile);
+
         public abstract void Execute();
     }
 }
