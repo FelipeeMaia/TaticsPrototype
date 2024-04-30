@@ -47,6 +47,11 @@ namespace Tactics.Grids
             return newGrid;
         }
 
+        public Tile[,] GetGrid()
+        {
+            return _Grid;
+        }
+
         //Get a Tile's neighbours
         private List<Tile> FindNeighbours(Tile tile)
         {

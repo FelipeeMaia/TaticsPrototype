@@ -48,6 +48,8 @@ namespace Tactics.Core
 
         public void ActionEnd()
         {
+            attack.OnAttackHit -= ActionEnd;
+            walker.OnStopMoving -= ActionEnd;
             OnActionEnd?.Invoke(this);
         }
 

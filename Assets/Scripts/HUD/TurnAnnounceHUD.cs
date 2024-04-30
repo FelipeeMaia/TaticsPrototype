@@ -11,15 +11,17 @@ namespace Tactics.HUD
     {
         [SerializeField] TMP_Text _announcement;
         [SerializeField] CanvasGroup _canvas;
-        [SerializeField] float _fadesTime;
+        [SerializeField] float _fadeTime;
         [SerializeField] float _waitTime;
         [SerializeField] TurnManager _manager;
 
         public void AnnounceNewTurn(Unit unit)
         {
             Color teamColor = Colors.GetTeamColor(unit.team);
+            string teamName = Strings.GetTeamName(unit.team);
+            string announcement = $"{teamName} {unit.uName}'s Turn";
 
-            _announcement.text = $"{unit.uName}'s Turn";
+            _announcement.text = announcement;
             _announcement.color = teamColor;
 
             StartCoroutine(FadeAnnouncement());
@@ -33,7 +35,7 @@ namespace Tactics.HUD
             while (time < 1)
             {
                 yield return new WaitForFixedUpdate();
-                time += Time.fixedDeltaTime * _fadesTime;
+                time += Time.fixedDeltaTime * _fadeTime;
 
                 float fading = Mathf.SmoothStep(0, 1, time);
                 _canvas.alpha = fading;
@@ -44,7 +46,7 @@ namespace Tactics.HUD
             while (time > 0)
             {
                 yield return new WaitForFixedUpdate();
-                time -= Time.fixedDeltaTime * _fadesTime;
+                time -= Time.fixedDeltaTime * _fadeTime;
 
                 float fading = Mathf.SmoothStep(0, 1, time);
                 _canvas.alpha = fading;

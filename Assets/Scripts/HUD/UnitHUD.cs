@@ -24,10 +24,13 @@ namespace Tactics.HUD
         void OnEnable()
         {
             _canvas.worldCamera = Camera.main;
-            _nameHolder.text = unit.uName;
 
             unit.health.OnChangeHealth += UpdateHealth;
             unit.health.OnDeath += DisableHUD;
+
+            string teamName = Strings.GetTeamName(unit.team);
+            string unitName = $"{teamName} {unit.uName}";
+            _nameHolder.text = unitName;
 
             Color teamColor = Colors.GetTeamColor(unit.team);
             _nameHolder.color = teamColor;

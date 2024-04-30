@@ -18,6 +18,7 @@ namespace Tactics.Managment
         [SerializeField] List<Unit> _team2Units;
 
         public Action<Unit> OnUnitSpawn;
+        public Action<int> OnGameEnd;
 
         // Start is called before the first frame update
         void Start()
@@ -59,15 +60,15 @@ namespace Tactics.Managment
             return unitsSpawn;
         }
 
-        public void OnUnitDeath(Unit unit)
+        public void OnUnitDeath(Unit deadUnit)
         {
-            var teamList = unit.team == 0 ? _team1Units : _team2Units;
-
-            teamList.Remove(unit);
+            var teamList = deadUnit.team == 0 ? _team1Units : _team2Units;
+            teamList.Remove(deadUnit);
 
             if(teamList.Count == 0)
             {
-                Debug.Log($"Team {unit.team + 1} have lost all units.");
+                int winnerTeam = deadUnit.team == 0 ? 1 : 0;
+                OnGameEnd?.Invoke(winnerTeam);
             }
         }
     }

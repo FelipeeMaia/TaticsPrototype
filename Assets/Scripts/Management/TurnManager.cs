@@ -67,10 +67,10 @@ namespace Tactics.Managment
             PickNext();
         }
 
-        public void OnUnitDeath(Unit unit)
+        public void OnUnitDeath(Unit deadUnit)
         {
-            allUnits.Remove(unit);
-            _nextInTurn.Remove(unit);
+            allUnits.RemoveAll(u => u == deadUnit);
+            _nextInTurn.RemoveAll(u => u == deadUnit);
         }
 
         public void StartTurns(List<Unit> allUnits)

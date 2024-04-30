@@ -19,6 +19,7 @@ namespace Tactics.SkillBar
         private const int buttonCount = 3;
 
         [SerializeField] TurnManager _turnManager;
+        [SerializeField] GameManager _gameManager;
         [SerializeField] CommandManager _commander;
 
         public void SetupBar(Unit unit)
@@ -90,10 +91,16 @@ namespace Tactics.SkillBar
             _unprepareButton.interactable = canUnprepare;
         }
 
+        private void DeactivateBar(int team)
+        {
+            gameObject.SetActive(false);
+        }
+
         private void Awake()
         {
             _turnManager.OnTurnStart += SetupBar;
             _commander.CommandPrepared += OnCommandPrepared;
+            _gameManager.OnGameEnd += DeactivateBar;
 
             foreach(var button in _buttons)
             {
