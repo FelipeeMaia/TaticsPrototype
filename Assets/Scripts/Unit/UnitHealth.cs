@@ -14,11 +14,11 @@ namespace Tactics.Units
         public Action<Unit> OnDeath;
         public Action OnHit;
 
-        private bool _isDead;
+        public bool isDead { get; private set; }
 
         public void Damage(int amount)
         {
-            if (_isDead) return;
+            if (isDead) return;
 
             _currentHealth -= amount;
             OnChangeHealth?.Invoke(_currentHealth, _maxHealth);
@@ -26,7 +26,7 @@ namespace Tactics.Units
             if (_currentHealth <= 0)
             {
                 OnDeath?.Invoke(_parent);
-                _isDead = true;
+                isDead = true;
             }
             else
             {

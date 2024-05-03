@@ -1,6 +1,4 @@
 using Tactics.Core;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 namespace Tactics.Commands
@@ -37,11 +35,8 @@ namespace Tactics.Commands
         {
             initialTile = _initialTile;
             _targetUnit.ocupedTile.highlight.CleanAttack(); ;
-
-            // ToDo:
-            //  - Undo highlight.
-            //  - Turn ghost toward original position.
         }
+
         public override void Execute()
         {
             _targetUnit.ocupedTile.highlight.CleanAttack();
@@ -66,6 +61,11 @@ namespace Tactics.Commands
             if (unitFound)
             {
                 tileHasEnemy = _myUnit.team != unitFound.team;
+            }
+
+            if(tileHasEnemy)
+            {
+                return !unitFound.health.isDead;
             }
 
             return tileHasEnemy;

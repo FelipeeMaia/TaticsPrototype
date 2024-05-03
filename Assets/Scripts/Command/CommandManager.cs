@@ -21,6 +21,8 @@ namespace Tactics.Commands
         Unit _selectedUnit;
         Tile _expectedTile;
 
+        bool _canPrepare;
+
         public void SelectUnit(Unit newUnit)
         {
             _selectedUnit = newUnit;
@@ -37,6 +39,8 @@ namespace Tactics.Commands
         {
             _selectedCommand = newCommand;
             newCommand.Visualize(_selectedUnit, _expectedTile, _grid);
+
+            _canPrepare = true;
         }
 
         public void CancelCommand()
@@ -47,7 +51,7 @@ namespace Tactics.Commands
 
         public void PrepareCommand(Tile selectedTile)
         {
-            if (!_selectedCommand) return;
+            if (!_selectedCommand || !_canPrepare) return;
 
             Tile newExpected;
             bool success = _selectedCommand.Prepare(selectedTile, out newExpected);
@@ -57,6 +61,8 @@ namespace Tactics.Commands
             _commandList.Add(_selectedCommand);
             commandCount = _commandList.Count;
             CommandPrepared?.Invoke(_selectedCommand);
+
+            _canPrepare = false;
         }
 
         public Command UnprepareCommand()
